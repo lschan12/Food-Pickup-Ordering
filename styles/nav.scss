@@ -1,0 +1,58 @@
+nav {
+  height: 120px;
+  width: 100%;
+  background-color: rgb(120, 150, 120) ;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+}
+
+.left-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#logo {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 2.5em;
+  margin-right: 0.5em;
+  cursor: pointer;
+}
+
+#search {
+  height: 1.5em;
+  margin-right: 1em;
+  border: 1px solid gray;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+}
+
+#contact-us {
+  cursor: pointer;
+}
+
+.user_buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#register {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+#login {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+#cart {
+  cursor: pointer;
+}

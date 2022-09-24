@@ -4,3 +4,23 @@ body,
 html {
   margin: 0;
 }
+
+#back-to-top {
+  position: fixed;
+  bottom: 1.5em;
+  right: 2em;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: darkblue;
+  color: white;
+  cursor: pointer;
+  padding: 0.7em;
+  border-radius: 50%;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+#back-to-top:hover {
+  transform: scale(1.1);
+}

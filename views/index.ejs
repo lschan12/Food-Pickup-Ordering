@@ -7,18 +7,45 @@
   <meta charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-
+  <!-- External CSS -->
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
   <link rel="stylesheet" href="/vendor/border-box.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- App CSS -->
   <link rel="stylesheet" href="/styles/main.css" />
   <link rel="stylesheet" href="/styles/layout.css" />
+  <link rel="stylesheet" href="/styles/nav.css" />
 
+  <!-- External JS -->
   <script src="/vendor/jquery-3.0.0.js"></script>
+  <!-- App JS -->
   <script defer src="/scripts/app.js"></script>
 </head>
 
 <body>
-  <h1>Have fun! 🥔</h1>
+<!-- Top nav bar (fixed) -->
+  <nav>
+    <div class="left-nav">
+      <span id="logo">Logo</span>
+      <input type="text" id="search" onkeyup="searchDishes()" placeholder="Search for a dish...">
+      <div id="contact-us">Contact Us</div>
+    </div>
+    <div class="user-buttons">
+      <span id="register">Register</span>
+      <span id="login">Login</span>
+      <i id="cart" class="fa-solid fa-cart-shopping"></i>
+    </div>
+  </nav>
+  <main class="container">
+    <!-- Back to top button (fixed) -->
+    <button id="back-to-top"><i class="fa-solid fa-arrow-up"></i></button>
+    <!-- Category nav -->
+    <section class="dishes">
+      <div class="categories">categories</div>
+      <section id="dishes-container">dishes</section>
+    </section>
+    <section id="order-summary">order summary</section>
+  </main>
 </body>
 
 </html>
