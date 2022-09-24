@@ -54,6 +54,7 @@ body {
   overflow: auto;
   white-space: nowrap;
   border-radius: 1.5em;
+  box-shadow: 0.2em 0.2em 0.5em gray;
   a {
     display: inline-block;
     text-align: center;
@@ -84,7 +85,6 @@ body {
     margin-bottom: 1%;
     padding: 3%;
     border-radius: 1em;
-    cursor: pointer;
     .dish-detail {
       width: 100%;
       display: flex;
@@ -96,7 +96,7 @@ body {
       }
       div {
         margin-top: 1%;
-        margin-bottom: 1%;
+        margin-bottom: 2%;
         font-size: 1em;
       }
     }
@@ -107,6 +107,19 @@ body {
   article:hover {
     box-shadow: 0.2em 0.2em 0.5em gray;
   }
+}
+
+#add-to-cart {
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 2em;
+  border: none;
+  font-size: 1em;
+  background-color: rgb(206, 229, 244);
+  cursor: pointer;
+}
+
+#add-to-cart:hover {
+  transform: scale(1.05);
 }
 
 #order-summary {
@@ -121,6 +134,7 @@ body {
   align-self: baseline;
   top: 2em;
   position: sticky;
+  box-shadow: 0.2em 0.2em 0.5em gray;
   div {
     margin-bottom: 3%;
   }
@@ -130,7 +144,6 @@ body {
   margin-top: 2%;
   border-top: 5px solid black;
   padding: 2%;
-
   article {
     margin-top: 5%;
     margin-bottom: 5%;
@@ -154,4 +167,17 @@ body {
       }
     }
   }
+}
+
+#place-order {
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 2em;
+  border: none;
+  font-size: 1em;
+  background-color: rgb(206, 229, 244);
+  cursor: pointer;
+}
+
+#place-order:hover {
+  transform: scale(1.05);
 }
