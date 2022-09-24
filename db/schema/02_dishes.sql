@@ -1,0 +1,13 @@
+-- Drop and recreate Dishes table
+
+DROP TABLE IF EXISTS dishes CASCADE;
+
+CREATE TABLE dishes (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  photo_url VARCHAR(255) NOT NULL,
+  price VARCHAR(255) NOT NULL DEFAULT 0,
+  prep_time SMALLINT NOT NULL DEFAULT 0,
+  description TEXT NOT NULL,
+  rating SMALLINT DEFAULT 0
+);

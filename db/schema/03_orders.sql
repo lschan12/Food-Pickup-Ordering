@@ -1,0 +1,11 @@
+-- Drop and recreate Orders table
+
+DROP TABLE IF EXISTS orders CASCADE;
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  total_price INTEGER NOT NULL DEFAULT 0,
+  est_prep_time SMALLINT NOT NULL DEFAULT 0,
+  actual_prep_time SMALLINT NOT NULL DEFAULT 0
+);
