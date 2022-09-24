@@ -10,5 +10,5 @@ CREATE TABLE dishes (
   price VARCHAR(255) NOT NULL DEFAULT 0,
   prep_time SMALLINT NOT NULL DEFAULT 0,
   description TEXT NOT NULL,
-  rating SMALLINT DEFAULT 0
+  rating DECIMAL(2,1) DEFAULT 0.0
 );
