@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   console.log("running load dishes");
   loadDishes();
 });
@@ -17,15 +17,31 @@ const createDishElement = (obj) => {
   `);
   return element;
 };
-const renderDishes = (dishes) => {
-  for (let dish of dishes) {
-    let generatedDish = createDishElement(dish);
-    $("#dishes-container").append(generatedDish);
+
+const renderDishes = (dishes, category) => {
+  let filteredDishes = dishes;
+  if (category !== null && category !== "All") {
+    filteredDishes = dishes.filter(dish => dish.category === category);
   }
-};
-const loadDishes = () => {
-  $.get("/api/dishes", function(data) {
-    renderDishes(data);
+  filteredDishes.forEach(dish => {
+    const generatedDish = createDishElement(dish);
+    $("#dishes-container").append(generatedDish);
   });
 };
 
+// const renderDishes = (dishes, category) => {
+//   for (let dish of dishes) {
+//     let generatedDish = createDishElement(dish);
+//     $("#dishes-container").append(generatedDish);
+//   }
+// };
+
+const loadDishes = (category) => {
+  $.get("/api/dishes")
+    .then((data) => {
+      renderDishes(data, category);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
