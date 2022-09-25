@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  console.log("running load dishes");
   loadDishes();
+  addToCart();
 });
 
 const createDishElement = (obj) => {
@@ -10,7 +10,8 @@ const createDishElement = (obj) => {
   <label>${obj.name}</label>
   <div>${obj.description}</div>
   <div>$${obj.price / 100}</div>
-  <button id="add-to-cart">Add to Cart</button>
+  <h1 class="dishId">${obj.id}</h1>
+  <button id='${obj.id}'class="add-to-cart">Add to Cart</button>
   </div>
   <img src="${obj.photo_url}">
   </article>
@@ -29,3 +30,49 @@ const loadDishes = () => {
   });
 };
 
+const cartArray = [];
+const countFunction = (array) => {
+  const counter = {};
+  array.forEach(obj => {
+    let key = obj.id;
+    counter[key] = (counter[key] || 0) + 1;
+  });
+  return counter;
+};
+
+const createCartElement = (obj, count) => {
+  const element = $(`
+  <article>
+  <div class="item-count">${count}</div>
+  <div class="dish-detail">
+  <label>${obj.name}</label>
+  </div>
+  <div>$${(obj.price / 100) * count}</div>
+  </article>
+  `);
+  return element;
+};
+
+const renderCartElement = (array) => {
+  array.forEach(element => {
+    let count = countFunction(cartArray)[element.id];
+    let generatedElement = createCartElement(element, count);
+    $('.cart-detail').append(generatedElement);
+  });
+};
+
+const loadCart = () => {
+  const noDupeArr = [...new Map(cartArray.map((item) => [item.id, item])).values()];
+  $('.cart-detail').empty();
+  renderCartElement(noDupeArr);
+};
+
+const addToCart = () => {
+  $('#dishes-container').on('click', ".add-to-cart", function() {
+    let productId = $(this).attr("id");
+    $.get(`/api/dishes/${productId}`, function(data) {
+      cartArray.push(data);
+      loadCart();
+    });
+  });
+};
