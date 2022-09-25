@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  loadDishes();
+  loadDishes("All");
   addToCart();
 });
 
@@ -18,15 +18,15 @@ const createDishElement = (obj) => {
   `);
   return element;
 };
-const renderDishes = (dishes) => {
-  for (let dish of dishes) {
-    let generatedDish = createDishElement(dish);
-    $("#dishes-container").append(generatedDish);
+
+const renderDishes = (dishes, category) => {
+  let filteredDishes = dishes;
+  if (category !== null && category !== "All") {
+    filteredDishes = dishes.filter((dish) => dish.category === category);
   }
-};
-const loadDishes = () => {
-  $.get("/api/dishes", function(data) {
-    renderDishes(data);
+  filteredDishes.forEach((dish) => {
+    const generatedDish = createDishElement(dish);
+    $("#dishes-container").append(generatedDish);
   });
 };
 
@@ -75,4 +75,14 @@ const addToCart = () => {
       loadCart();
     });
   });
+
+const loadDishes = (category) => {
+  $.get("/api/dishes")
+    .then((data) => {
+      $("#dishes-container").empty();
+      renderDishes(data, category);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
