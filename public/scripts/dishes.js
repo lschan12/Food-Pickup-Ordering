@@ -38,6 +38,7 @@ const renderDishes = (dishes, category) => {
 const loadDishes = (category) => {
   $.get("/api/dishes")
     .then((data) => {
+      $("#dishes-container").empty();
       renderDishes(data, category);
     })
     .catch((error) => {
