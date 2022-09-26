@@ -79,15 +79,20 @@ const removeFromCart = () => {
 const placeOrder = () => {
   $("#place-order").on("click", function () {
     const orderTime = allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0);
-    const orderData = {
-        orderTotal,
-        orderTime
-    };
-    console.log("Console log from click handler (before post): ", orderData);
+    const dishIDs = allCartItems.map(dish => dish.id);
+    const orderData = { 
+      orderTotal, 
+      orderTime,
+      dishIDs
+     };
+
     $.post("/api/orders", orderData).then((data) => {
-      console.log("Console log from click handler (after post): ", data);
-      // prevent new items from being added to order (cart is display only)
-      // and/or replace 'place order' button with 'start new order'
+      // POST to database, THEN:
+      // (1) prevent new items from being added to order (cart is display only?)
+      // (2) replace 'place order' button with 'create new order'?
+      // (3) display estimated order time inside the cart header
     });
+
+
   });
 };
