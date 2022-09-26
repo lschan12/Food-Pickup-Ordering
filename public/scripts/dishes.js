@@ -1,7 +1,6 @@
 $(document).ready(function() {
   loadDishes("All");
   addToCart();
-  removeFromCart();
 });
 
 const createDishElement = (obj) => {
