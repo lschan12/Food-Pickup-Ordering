@@ -1,0 +1,86 @@
+body {
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#receipt {
+  margin-top: 10%;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1.5em;
+  background-color: #fcfcfb;
+  box-shadow: 0.2em 0.2em 0.5em gray;
+  .restaurant-info {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-bottom: 1px solid black;
+    padding: 2%;
+    margin-bottom: 5%;
+    label {
+      font-size: 2em;
+      padding-bottom: 2%;
+    }
+    div {
+      font-size: 1em;
+    }
+  }
+}
+
+#receipt-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: 1px dotted black;
+  article {
+    width: 100%;
+    padding: 2% 5% 2% 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    .item-count {
+      margin-right: 5%;
+    }
+    .dish-detail {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
+      label {
+        margin-bottom: 2%;
+        font-size: 1em;
+      }
+      div {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+#total {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 2% 5% 2% 5%;
+  .time {
+    display: flex;
+    flex-direction: column;
+  }
+  #total-price {
+
+  }
+}

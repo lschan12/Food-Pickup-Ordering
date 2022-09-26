@@ -24,3 +24,19 @@ html {
 #back-to-top:hover {
   transform: scale(1.1);
 }
+
+@media only screen and (max-width: 760px) {
+  nav {
+    width: 100%;
+    .user-buttons {
+      display: none;
+    }
+    #nav-toggle {
+      display: flex;
+      cursor: pointer;
+    }
+  }
+  .order-selection {
+    flex-direction: column;
+  }
+}

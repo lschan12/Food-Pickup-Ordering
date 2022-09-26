@@ -1,6 +1,7 @@
 $(document).ready(function() {
   loadDishes("All");
   addToCart();
+  // navToggle();
 });
 
 const createDishElement = (obj) => {
@@ -30,6 +31,17 @@ const renderDishes = (dishes, category) => {
   });
 };
 
+const loadDishes = (category) => {
+  $.get("/api/dishes")
+    .then((data) => {
+      $("#dishes-container").empty();
+      renderDishes(data, category);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const cartArray = [];
 const countFunction = (array) => {
   const counter = {};
@@ -43,7 +55,7 @@ const countFunction = (array) => {
 const createCartElement = (obj, count) => {
   const element = $(`
   <article>
-  <div class="item-count">${count}</div>
+  <div class="item-count">${count}x</div>
   <div class="dish-detail">
   <label>${obj.name}</label>
   </div>
@@ -75,14 +87,15 @@ const addToCart = () => {
       loadCart();
     });
   });
-
-const loadDishes = (category) => {
-  $.get("/api/dishes")
-    .then((data) => {
-      $("#dishes-container").empty();
-      renderDishes(data, category);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };
+
+// const navToggle = () => {
+//   let nav = $("#nav-toggle");
+//   nav.click(function(e) {
+//     if (nav.css("display") === "flex") {
+//       $(".user-buttons").css({"display": "none"});
+//     } else {
+//       $(".user-buttons").css({"display": "flex"});
+//     }
+//   });
+// };

@@ -49,6 +49,10 @@ app.get('/', (req, res) => {
   res.redirect('dishes');
 });
 
+app.get('/receipt', (req, res) => {
+  res.render("receipt");
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
