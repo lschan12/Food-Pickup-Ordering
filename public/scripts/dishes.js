@@ -1,6 +1,7 @@
 $(document).ready(function() {
   loadDishes("All");
   addToCart();
+  removeFromCart();
 });
 
 const createDishElement = (obj) => {
@@ -11,7 +12,7 @@ const createDishElement = (obj) => {
   <div>${obj.description}</div>
   <div>$${obj.price / 100}</div>
   <h1 class="dishId">${obj.id}</h1>
-  <button id='${obj.id}'class="add-to-cart">Add to Cart</button>
+  <button id='${obj.id}' class="add-to-cart">Add to Cart</button>
   </div>
   <img src="${obj.photo_url}">
   </article>
@@ -30,7 +31,19 @@ const renderDishes = (dishes, category) => {
   });
 };
 
+const loadDishes = (category) => {
+  $.get("/api/dishes")
+    .then((data) => {
+      $("#dishes-container").empty();
+      renderDishes(data, category);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const cartArray = [];
+let noDupeArr = [];
 const countFunction = (array) => {
   const counter = {};
   array.forEach(obj => {
@@ -42,12 +55,13 @@ const countFunction = (array) => {
 
 const createCartElement = (obj, count) => {
   const element = $(`
-  <article>
-  <div class="item-count">${count}</div>
-  <div class="dish-detail">
-  <label>${obj.name}</label>
-  </div>
-  <div>$${(obj.price / 100) * count}</div>
+  <article class="cart">
+    <div class="item-count">${count}</div>
+    <div class="dish-detail">
+      <label>${obj.name}</label>
+    </div>
+    <div>$${(obj.price / 100) * count}</div>
+    <button id='${obj.id}' class="remove-from-cart">Remove</button>
   </article>
   `);
   return element;
@@ -62,9 +76,10 @@ const renderCartElement = (array) => {
 };
 
 const loadCart = () => {
-  const noDupeArr = [...new Map(cartArray.map((item) => [item.id, item])).values()];
+  noDupeArr = [...new Map(cartArray.map((item) => [item.id, item])).values()];
   $('.cart-detail').empty();
   renderCartElement(noDupeArr);
+  removeFromCart();
 };
 
 const addToCart = () => {
@@ -75,14 +90,23 @@ const addToCart = () => {
       loadCart();
     });
   });
-
-const loadDishes = (category) => {
-  $.get("/api/dishes")
-    .then((data) => {
-      $("#dishes-container").empty();
-      renderDishes(data, category);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };
+
+const removeFromCart = () => {
+
+  $('.remove-from-cart').on('click', function() {
+    const removeID = $(this).attr("id");
+
+    let i = cartArray.length;
+    while (i--) {
+      if (cartArray[i].id === Number(removeID)) {
+        cartArray.splice(i, 1);
+      }
+    };
+    noDupeArr.forEach((element, index, array) => {
+      if (element.id === Number(removeID)) array.splice(index,1);
+    });
+
+    loadCart();
+  });
+}
