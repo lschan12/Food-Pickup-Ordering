@@ -3,6 +3,7 @@ const router = express.Router();
 const { placeOrder } = require("../db/queries/orders");
 
 router.post("/", (req, res) => {
+  console.log(req.body);
   placeOrder(req.body)
     .then((response) => {
       res.json(response)
