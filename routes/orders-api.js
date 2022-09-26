@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { placeOrder, updateOrderDishesTable } = require("../db/queries/orders");
+const { placeOrder } = require("../db/queries/orders");
 
 router.post("/", (req, res) => {
   placeOrder(req.body)

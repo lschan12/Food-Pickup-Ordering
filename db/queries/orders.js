@@ -1,4 +1,3 @@
-const { query } = require("express");
 const db = require("../connection");
 
 const updateOrderDishesTable = (dishIDs, orderID) => {
@@ -9,8 +8,7 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
   queryString = queryString.slice(0, -2);
   queryString += " RETURNING *;";
 
-  return db
-    .query(queryString)
+  return db.query(queryString)
     .then((data) => {
     })
     .catch((err) => {
@@ -29,9 +27,7 @@ const placeOrder = ({ orderTotal, orderTime, dishIDs }) => {
     VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING *;`;
 
   const queryParams = [userId, orderTotal, orderTime];
-
-  return db
-    .query(queryString, queryParams)
+  return db.query(queryString, queryParams)
     .then((result) => {
       return updateOrderDishesTable(dishIDs, result.rows[0].id);
     })

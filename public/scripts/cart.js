@@ -88,11 +88,10 @@ const placeOrder = () => {
 
     $.post("/api/orders", orderData).then((data) => {
       // POST to database, THEN:
-      // (1) prevent new items from being added to order (cart is display only?)
+      // (1) redirect to 'order receipt' display
       // (2) replace 'place order' button with 'create new order'?
       // (3) display estimated order time inside the cart header
+      // (4) send order confirmation via SMS to user
     });
-
-
   });
 };
