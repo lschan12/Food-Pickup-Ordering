@@ -1,10 +1,24 @@
 const db = require('../connection');
 
 const getDishes = () => {
-  return db.query('SELECT * FROM dishes;')
+  const queryString = 
+  'SELECT dishes.*, categories.name as category FROM dishes \
+  JOIN categories ON category_id = categories.id;'
+  
+  return db.query(queryString)
     .then(data => {
       return data.rows;
     });
 };
 
-module.exports = { getDishes };
+const getDish = (productId) => {
+  return db.query(`
+  SELECT * FROM dishes
+  WHERE id = $1
+  `, [productId])
+    .then((data) => {
+      return data.rows[0];
+    });
+};
+
+module.exports = { getDishes, getDish };

@@ -85,21 +85,18 @@ body {
     margin-bottom: 1%;
     padding: 3%;
     border-radius: 1em;
-    .dish-detail {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: baseline;
-      label {
+    label {
         margin-bottom: 2%;
         font-size: 1.8em;
-      }
-      div {
+    }
+    div {
         text-align: left;
         margin-top: 1%;
         margin-bottom: 2%;
         font-size: 1em;
-      }
+    }
+    .dishId {
+      display: none;
     }
     img {
       width: 30%;
@@ -110,7 +107,7 @@ body {
   }
 }
 
-#add-to-cart {
+.add-to-cart {
   padding: 0.5em 1em 0.5em 1em;
   border-radius: 2em;
   border: none;
@@ -119,7 +116,20 @@ body {
   cursor: pointer;
 }
 
-#add-to-cart:hover {
+.add-to-cart:hover {
+  transform: scale(1.05);
+}
+
+.remove-from-cart {
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 2em;
+  border: none;
+  font-size: 1em;
+  background-color: rgb(206, 229, 244);
+  cursor: pointer;
+}
+
+.remove-from-cart:hover {
   transform: scale(1.05);
 }
 
@@ -152,6 +162,9 @@ body {
     flex-direction: row;
     justify-content: space-evenly;
     border-bottom: 0.2px solid gray;
+    .item-count {
+      margin-right: 5%;
+    }
     .dish-detail {
       width: 100%;
       display: flex;
@@ -159,7 +172,7 @@ body {
       align-items: baseline;
       label {
         margin-bottom: 2%;
-        font-size: 1.8em;
+        font-size: 1em;
       }
       div {
         margin-top: 1%;

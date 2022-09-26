@@ -3,4 +3,4 @@
 INSERT INTO categories (name) VALUES 
 ('Pizza'), 
 ('Pasta'), 
-('Appetizers');
+('Appetizer');

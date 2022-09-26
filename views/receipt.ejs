@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Receipt</title>
+
+  <meta charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <!-- External CSS -->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/styles/layout.css" />
+  <link rel="stylesheet" href="/styles/nav.css" />
+  <link rel="stylesheet" href="/styles/receipt.css" />
+
+  <!-- External JS -->
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <!-- App JS -->
+  <script type="text/javascript" src="/scripts/dishes.js"></script>
+  <script defer src="/scripts/app.js"></script>
+</head>
+
+<body>
+  <!-- Website Navbar -->
+  <nav>
+    <header id="website-info">
+      <div class="left-nav">
+        <span id="logo">Logo</span>
+        <div id="contact-us">Contact Us</div>
+      </div>
+      <div class="user-buttons">
+        <span id="login">Login</span>
+        <span id="register">Register</span>
+      </div>
+      <a id="nav-toggle"><i class="fa-solid fa-bars"></i></a>
+    </header>
+  </nav>
+  <main id="receipt">
+    <section class="restaurant-info">
+      <label>Restaurant Name</label>
+      <div>
+        <i class="fa-solid fa-location-dot"></i> Pick up at 1234 Test Ave
+      </div>
+    </section>
+    <section id="receipt-container">
+      <article>
+        <div class="item-count">1x</div>
+        <div class="dish-detail">
+          <label>Dish Name</label>
+        </div>
+        <div>Price</div>
+      </article>
+      <article>
+        <div class="item-count">1x</div>
+        <div class="dish-detail">
+          <label>Dish Name</label>
+        </div>
+        <div>Price</div>
+      </article>
+      <article>
+        <div class="item-count">1x</div>
+        <div class="dish-detail">
+          <label>Dish Name</label>
+        </div>
+        <div>Price</div>
+      </article>
+    </section>
+    <section id="total">
+      <div class="time">
+        <div id="est-time">1 Hour</div>
+        <div id="actual-time">45 minutes</div>
+      </div>
+      <div id="total-price">$350</div>
+    </section>
+  </main>
+</body>
+</html>
+

@@ -14,4 +14,16 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+  dishesQueries.getDish(req.params.id)
+    .then(dish => {
+      res.json(dish);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});
+
 module.exports = router;

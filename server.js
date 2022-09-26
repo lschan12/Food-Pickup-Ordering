@@ -26,25 +26,36 @@ app.use(
 );
 app.use(express.static('public'));
 
-// Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
+/** 
+ * Define Routes
+*/
+
+// API Routes
 const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
 const dishesApiRoutes = require('./routes/dishes-api');
+const ordersApiRoutes = require('./routes/orders-api');
+
+// Render Routes
 const usersRoutes = require('./routes/users');
 const dishesRoutes = require('./routes/dishes');
 
-// Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-// Note: Endpoints that return data (eg. JSON) usually start with `/api`
-app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
-app.use('/api/dishes', dishesApiRoutes);
-app.use('/dishes', dishesRoutes);
-app.use('/users', usersRoutes);
-// Note: mount other resources here, using the same pattern above
+/** 
+ * Mount Routes
+*/
 
-// Home page
+// API Routes
+app.use('/api/users', userApiRoutes);
+app.use('/api/dishes', dishesApiRoutes);
+app.use('/api/orders', ordersApiRoutes);
+
+// Render Routes
+app.use('/users', usersRoutes);
+app.use('/dishes', dishesRoutes);
+
+/** 
+ * Home Page
+*/
+
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
