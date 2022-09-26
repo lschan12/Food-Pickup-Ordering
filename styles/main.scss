@@ -109,6 +109,19 @@ body {
   transform: scale(1.05);
 }
 
+.remove-from-cart {
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 2em;
+  border: none;
+  font-size: 1em;
+  background-color: rgb(206, 229, 244);
+  cursor: pointer;
+}
+
+.remove-from-cart:hover {
+  transform: scale(1.05);
+}
+
 #order-summary {
   display: flex;
   flex-direction: column;
