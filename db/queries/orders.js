@@ -25,13 +25,13 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
     });
 };
 
-const placeOrder = ({ customerID, totalPrice, estimatedTime, dishIDs }) => {
+const placeOrder = ({ customerID, totalPrice, estimatedTime, dishIDs, status }) => {
 
   const queryString = `
-    INSERT INTO orders (user_id, order_time, total_price, est_prep_time)
-    VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING *;`;
+    INSERT INTO orders (user_id, order_time, total_price, est_prep_time, status)
+    VALUES ($1, CURRENT_TIMESTAMP, $2, $3, $4) RETURNING *;`;
 
-  const queryParams = [customerID, totalPrice, estimatedTime];
+  const queryParams = [customerID, totalPrice, estimatedTime, status];
   return db.query(queryString, queryParams)
     .then((result) => {
       return updateOrderDishesTable(dishIDs, result.rows[0].id);

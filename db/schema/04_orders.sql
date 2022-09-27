@@ -8,5 +8,6 @@ CREATE TABLE orders (
   order_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total_price INTEGER NOT NULL DEFAULT 0,
   est_prep_time SMALLINT NOT NULL DEFAULT 0,
-  actual_prep_time SMALLINT NOT NULL DEFAULT 0
+  actual_prep_time SMALLINT NOT NULL DEFAULT 0,
+  status VARCHAR(10) DEFAULT 'open'
 );

@@ -1,6 +1,5 @@
 $(() => {
   placeOrder();
-  sendSMS();
   addToCart();
 });
 
@@ -88,6 +87,7 @@ const placeOrder = () => {
       totalPrice, 
       estimatedTime: allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0),
       dishIDs: allCartItems.map(dish => dish.id),
+      status: 'open',
       // sms data 
       customerName: 'Bob Smith', 
       customerPhone: '(403)878-2903', 
