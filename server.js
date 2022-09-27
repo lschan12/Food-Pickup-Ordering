@@ -26,7 +26,7 @@ app.use(
 );
 app.use(express.static('public'));
 
-/** 
+/**
  * Define Routes
 */
 
@@ -34,12 +34,13 @@ app.use(express.static('public'));
 const userApiRoutes = require('./routes/users-api');
 const dishesApiRoutes = require('./routes/dishes-api');
 const ordersApiRoutes = require('./routes/orders-api');
+const receiptApiRoutes = require('./routes/receipt-api');
 
 // Render Routes
 const usersRoutes = require('./routes/users');
 const dishesRoutes = require('./routes/dishes');
-
-/** 
+const receiptRoutes = require('./routes/receipt');
+/**
  * Mount Routes
 */
 
@@ -47,12 +48,13 @@ const dishesRoutes = require('./routes/dishes');
 app.use('/api/users', userApiRoutes);
 app.use('/api/dishes', dishesApiRoutes);
 app.use('/api/orders', ordersApiRoutes);
+app.use('/api/receipt', receiptApiRoutes);
 
 // Render Routes
 app.use('/users', usersRoutes);
 app.use('/dishes', dishesRoutes);
-
-/** 
+app.use('/receipt', receiptRoutes);
+/**
  * Home Page
 */
 

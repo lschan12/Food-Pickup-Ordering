@@ -19,8 +19,7 @@
   <!-- External JS -->
   <script src="/vendor/jquery-3.0.0.js"></script>
   <!-- App JS -->
-  <script type="text/javascript" src="/scripts/dishes.js"></script>
-  <script defer src="/scripts/app.js"></script>
+  <!-- <script defer src="/scripts/receipt.js"></script> -->
 </head>
 
 <body>
@@ -46,34 +45,22 @@
       </div>
     </section>
     <section id="receipt-container">
-      <article>
-        <div class="item-count">1x</div>
-        <div class="dish-detail">
-          <label>Dish Name</label>
-        </div>
-        <div>Price</div>
-      </article>
-      <article>
-        <div class="item-count">1x</div>
-        <div class="dish-detail">
-          <label>Dish Name</label>
-        </div>
-        <div>Price</div>
-      </article>
-      <article>
-        <div class="item-count">1x</div>
-        <div class="dish-detail">
-          <label>Dish Name</label>
-        </div>
-        <div>Price</div>
-      </article>
+      <% for (let order of itemArr ) { %>
+        <article>
+          <div class="item-count"><%= order.qty%>x</div>
+          <div class="dish-detail">
+            <label><%= order.name%></label>
+          </div>
+          <div>$<%= (order.price / 100) * order.qty %></div>
+        </article>
+      <% } %>
     </section>
     <section id="total">
       <div class="time">
-        <div id="est-time">1 Hour</div>
-        <div id="actual-time">45 minutes</div>
+        <div id="est-time">Estimated time until pickup: <%= totalTime%> minutes</div>
+        <div id="actual-time">Actual time: pending...</div>
       </div>
-      <div id="total-price">$350</div>
+        <div id="total-price">Total: $<%= totalPrice %></div>
     </section>
   </main>
 </body>

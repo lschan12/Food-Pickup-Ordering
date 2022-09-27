@@ -1,5 +1,6 @@
 $(() => {
   placeOrder();
+  addToCart();
 });
 
 const allCartItems = [];
@@ -48,9 +49,9 @@ const loadCart = () => {
 };
 
 const addToCart = () => {
-  $("#dishes-container").on("click", ".add-to-cart", function () {
+  $("#dishes-container").on("click", ".add-to-cart", function() {
     let productId = $(this).attr("id");
-    $.get(`/api/dishes/${productId}`, function (data) {
+    $.get(`/api/dishes/${productId}`, function(data) {
       orderTotal += Number(data.price);
       allCartItems.push(data);
       loadCart();
@@ -59,7 +60,7 @@ const addToCart = () => {
 };
 
 const removeFromCart = () => {
-  $(".remove-from-cart").on("click", function () {
+  $(".remove-from-cart").on("click", function() {
     const removeID = $(this).attr("id");
 
     let i = allCartItems.length;
@@ -77,16 +78,16 @@ const removeFromCart = () => {
 };
 
 const placeOrder = () => {
-  $("#place-order").on("click", function () {
+  $("#place-order").on("click", function() {
     const orderTime = allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0);
     const dishIDs = allCartItems.map(dish => dish.id);
-    const orderData = { 
-      orderTotal, 
+    const orderData = {
+      orderTotal,
       orderTime,
       dishIDs
-     };
-
+    };
     $.post("/api/orders", orderData).then((data) => {
+      window.location.replace(`/receipt/${data.order_id}`);
       // POST to database, THEN:
       // (1) redirect to 'order receipt' display
       // (2) replace 'place order' button with 'create new order'?
