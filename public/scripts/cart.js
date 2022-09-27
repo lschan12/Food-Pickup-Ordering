@@ -90,11 +90,11 @@ const placeOrder = () => {
       dishIDs: allCartItems.map(dish => dish.id),
       // sms data 
       customerName: 'Bob Smith', 
-      customerPhone: '', 
+      customerPhone: '(403)878-2903', 
     }
 
     $.post("/api/orders", orderData).then((response) => {
-      console.log("Order data finished writing to database, response from cart.js: ", response);
+      // console.log("Order data finished writing to database, response from cart.js: ", response);
       window.location.replace(`/receipt/${response.order_id}`);
       // POST to database, THEN:
       
@@ -107,16 +107,7 @@ const placeOrder = () => {
       // (3) send SMS # 1 (order confirmation) to restaurant and customer
       orderData.orderID = response.rows[0].order_id;
       $.post('/api/sms/1',orderData).then(response => {
-        console.log("SMS # 1 completed, response from cart.js (from restaurant): ", response.restaurantSID);
-        console.log("SMS # 1 completed, response from cart.js (from customer): ", response.customerSID);
       });
     });
-  });
-};
-
-const sendSMS = () => {
-  $("#send-SMS").on("click", function () {
-    console.log("clicked SMS button");
-    $.get('/api/sms')
   });
 };
