@@ -39,6 +39,7 @@ const receiptApiRoutes = require('./routes/receipt-api');
 
 // Render Routes
 const dishesRoutes = require('./routes/dishes');
+const ordersRoutes = require('./routes/orders');
 const receiptRoutes = require('./routes/receipt');
 
 /* const usersRoutes = require('./routes/users');*/
@@ -56,6 +57,7 @@ app.use('/api/receipt', receiptApiRoutes);
 
 // Render Routes
 app.use('/dishes', dishesRoutes);
+app.use('/orders', ordersRoutes);
 app.use('/receipt', receiptRoutes);
 
 /* app.use('/users', usersRoutes); */
