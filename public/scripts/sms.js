@@ -54,7 +54,7 @@ const customerSMS_1 = ({customerName, estimatedTime}) => {
   
 /** 
  * Customer SMS # 2: ETA Update Notification
- * (this SMS is only sent if the restaurant manually specifies an ETA different from the default ETA).
+ * (only sent if the restaurant manually specifies an ETA different from the default ETA).
 */
 
 const customerSMS_2 = ({customerName, actualTime}) => {
@@ -75,7 +75,7 @@ const customerSMS_2 = ({customerName, actualTime}) => {
 
 /** 
  * Customer SMS # 3: Order Ready for Pickup Notification
- * This SMS is sent when the ETA is expired, or when the restaurant manually clicks the "Order Ready" button
+ * Sent when the ETA is expired, or when the restaurant manually clicks the "Order Ready" button
 */
 
 const customerSMS_3 = ({customerName, restaurantAddress}) => {
