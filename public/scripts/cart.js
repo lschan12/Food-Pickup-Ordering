@@ -94,8 +94,7 @@ const placeOrder = () => {
 
     $.post("/api/orders", orderData).then((response) => {
       console.log("Order data finished writing to database, response from cart.js: ", response);
-      // orderData.orderID = response.order_id;
-      
+
       // POST to database, THEN:
       
       // (1) redirect to 'order receipt' display (EJS template) => replace 'place order' button with 'create new order' which redirects back to GET /dishes (and clears cart)?
@@ -105,8 +104,10 @@ const placeOrder = () => {
               // code here
       
       // (3) send SMS # 1 (order confirmation) to restaurant and customer
+      orderData.orderID = response.rows[0].order_id;
       $.post('/api/sms/1',orderData).then(response => {
-        console.log("SMS # 1 completed (via post from cart.js), response from cart.js: ", response)
+        console.log("SMS # 1 completed, response from cart.js (from restaurant): ", response.restaurantSID);
+        console.log("SMS # 1 completed, response from cart.js (from customer): ", response.customerSID);
       });
     });
   });
