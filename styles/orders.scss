@@ -1,0 +1,56 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // min-height: 100vh;
+  background-color: lightgrey;
+  // background: rgb(163, 208, 219);
+  // background: linear-gradient(
+  //   227deg,
+  //   rgba(163, 208, 219, 1) 0%,
+  //   rgba(163, 176, 219, 1) 20%,
+  //   rgba(163, 173, 219, 1) 34%,
+  //   rgba(163, 219, 208, 1) 59%,
+  //   rgba(163, 208, 219, 1) 74%,
+  //   rgba(163, 208, 219, 1) 100%
+  // );
+}
+
+#orders-container {
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10%;
+  align-items: center;
+  article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #fcfcfb;
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding: 3%;
+    border-radius: 1em;
+    label {
+        margin-bottom: 2%;
+        font-size: 1.8em;
+    }
+    div {
+        text-align: left;
+        margin-top: 1%;
+        margin-bottom: 2%;
+        font-size: 1em;
+    }
+    .orderId {
+      display: none;
+    }
+    img {
+      width: 30%;
+    }
+  }
+  article:hover {
+    box-shadow: 0.2em 0.2em 0.5em gray;
+  }
+}
