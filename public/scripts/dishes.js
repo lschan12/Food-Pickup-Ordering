@@ -1,6 +1,5 @@
 $(() => {
   loadDishes("All");
-  addToCart();
 });
 
 const createDishElement = (obj) => {

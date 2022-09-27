@@ -10,7 +10,7 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
 
   return db.query(queryString)
     .then((data) => {
-      return data;
+      return data.rows[0];
     })
     .catch((err) => {
       console.log(err.message);

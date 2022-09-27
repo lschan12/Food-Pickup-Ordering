@@ -5,7 +5,7 @@ const { placeOrder } = require("../db/queries/orders");
 router.post("/", (req, res) => {
   placeOrder(req.body)
     .then((response) => {
-      res.json(response)
+      res.json(response);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
