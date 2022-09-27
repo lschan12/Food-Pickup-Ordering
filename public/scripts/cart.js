@@ -1,5 +1,6 @@
 $(() => {
   placeOrder();
+  sendSMS();
 });
 
 const allCartItems = [];
@@ -92,6 +93,14 @@ const placeOrder = () => {
       // (2) replace 'place order' button with 'create new order'?
       // (3) display estimated order time inside the cart header
       // (4) send order confirmation via SMS to user
+          // $.get('/api/sms',orderData);
     });
+  });
+};
+
+const sendSMS = () => {
+  $("#send-SMS").on("click", function () {
+    console.log("clicked SMS button");
+    $.get('/api/sms')
   });
 };

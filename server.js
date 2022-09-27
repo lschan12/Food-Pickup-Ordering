@@ -34,6 +34,7 @@ app.use(express.static('public'));
 const userApiRoutes = require('./routes/users-api');
 const dishesApiRoutes = require('./routes/dishes-api');
 const ordersApiRoutes = require('./routes/orders-api');
+const smsApiRoutes = require('./routes/sms-api');
 
 // Render Routes
 const usersRoutes = require('./routes/users');
@@ -47,6 +48,7 @@ const dishesRoutes = require('./routes/dishes');
 app.use('/api/users', userApiRoutes);
 app.use('/api/dishes', dishesApiRoutes);
 app.use('/api/orders', ordersApiRoutes);
+app.use('/api/sms', smsApiRoutes);
 
 // Render Routes
 app.use('/users', usersRoutes);
