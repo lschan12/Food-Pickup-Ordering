@@ -5,7 +5,7 @@ $(() => {
 
 const allCartItems = [];
 let uniqueCartItems = [];
-let orderTotal = 0;
+let totalPrice = 0;
 
 const countFunction = (array) => {
   const counter = {};
@@ -43,7 +43,7 @@ const loadCart = () => {
   $(".cart-detail").empty();
   renderCartElement(uniqueCartItems);
   $(".cart-detail").append(
-    `<div class="footer">Total: $${orderTotal / 100}</div>`
+    `<div class="footer">Total: $${totalPrice / 100}</div>`
   );
   removeFromCart();
 };
@@ -52,7 +52,7 @@ const addToCart = () => {
   $("#dishes-container").on("click", ".add-to-cart", function () {
     let productId = $(this).attr("id");
     $.get(`/api/dishes/${productId}`, function (data) {
-      orderTotal += Number(data.price);
+      totalPrice += Number(data.price);
       allCartItems.push(data);
       loadCart();
     });
@@ -66,7 +66,7 @@ const removeFromCart = () => {
     let i = allCartItems.length;
     while (i--) {
       if (allCartItems[i].id === Number(removeID)) {
-        orderTotal -= Number(allCartItems[i].price);
+        totalPrice -= Number(allCartItems[i].price);
         allCartItems.splice(i, 1);
       }
     }
@@ -78,22 +78,36 @@ const removeFromCart = () => {
 };
 
 const placeOrder = () => {
-  $("#place-order").on("click", function () {
-    const orderTime = allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0);
-    const dishIDs = allCartItems.map(dish => dish.id);
+  $("#place-order").on("click",() => {
+    
+    // TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
     const orderData = { 
-      orderTotal, 
-      orderTime,
-      dishIDs
-     };
+      // database
+      customerID: 1,
+      totalPrice, 
+      estimatedTime: allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0),
+      dishIDs: allCartItems.map(dish => dish.id),
+      // sms data 
+      customerName: 'Bob Smith', 
+      customerPhone: '', 
+    }
 
-    $.post("/api/orders", orderData).then((data) => {
+    $.post("/api/orders", orderData).then((response) => {
+      console.log("Order data finished writing to database, response from cart.js: ", response);
+      // orderData.orderID = response.order_id;
+      
       // POST to database, THEN:
-      // (1) redirect to 'order receipt' display
-      // (2) replace 'place order' button with 'create new order'?
-      // (3) display estimated order time inside the cart header
-      // (4) send order confirmation via SMS to user
-          // $.get('/api/sms',orderData);
+      
+      // (1) redirect to 'order receipt' display (EJS template) => replace 'place order' button with 'create new order' which redirects back to GET /dishes (and clears cart)?
+              // EJS template
+
+      // (2) display estimated order time inside the cart header (which will be updated once restaurant confirms ETA)
+              // code here
+      
+      // (3) send SMS # 1 (order confirmation) to restaurant and customer
+      $.post('/api/sms/1',orderData).then(response => {
+        console.log("SMS # 1 completed (via post from cart.js), response from cart.js: ", response)
+      });
     });
   });
 };
