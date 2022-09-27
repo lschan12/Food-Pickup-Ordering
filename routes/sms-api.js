@@ -48,7 +48,7 @@ router.post("/2", (req, res) => {
  * Customer recieves SMS
  */
 
- router.post("/3", (req, res) => {
+router.post("/3", (req, res) => {
   return customerSMS_3(req.body)
     .then((messageID) => {
       return res.send(messageID);

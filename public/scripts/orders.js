@@ -24,7 +24,7 @@ const renderOrders = (orders, status) => {
     filteredOrders = orders.filter((order) => order.status === status);
   }
   filteredOrders.forEach((order) => {
-    const generatedOrder = createDishElement(order);
+    const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
   });
 };
@@ -33,9 +33,13 @@ const loadOrders = (status) => {
     $.get("/api/orders")
       .then((data) => {
         $("#orders-container").empty();
-        renderOrders(data, category);
+        renderOrders(data, status);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+// TO DO: add click handler for 'ETA Input Box' which does the following:
+// (1) writes the 'actual_prep_time' to the database
+// (2) sends a text to the client
