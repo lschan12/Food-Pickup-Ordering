@@ -25,26 +25,29 @@
     <%- include('partials/_header') %>
   </nav>
   <main>
-    <form class="form" method="post" action="/api/login">
-      <div class="login-register-title">Login</div>
-      <div class="form-input">
-        <label class="name-label" for="inputFirstName">First Name</label>
-        <input class="name-inpnut" type="text" name="firstName" id="inputFirstName" placeholder="First Name">
-      </div>
-      <div class="form-input">
-        <label class="name-label" for="inputLastName">Last Name</label>
-        <input class="name-inpnut" type="text" name="lastName" id="inputLastName" placeholder="Last Name">
-      </div>
-      <div class="form-input">
-        <label class="phone-label" for="inputPhone">Phone Number</label>
-        <input class="phone-input" type="tel" name="phone" id="inputPhone" placeholder="123-456-7890">
-      </div>
-      <div class="form-input">
-        <label class="password-label" for="inputPassword">Password</label>
-        <input class="password-input" type="password" name="password" id="inputPassword" placeholder="Password">
-      </div>
-      <button class="submit-button" type="submit">Login</button>
-    </form>
+    <div id="form-container">
+      <div id="restaurant-pic" style="background-image: url('https://i.imgur.com/ughbGCU.jpeg')"></div>
+      <form class="form" method="post" action="/api/login">
+        <div class="login-register-title">Login</div>
+        <div class="form-input">
+          <label class="name-label" for="inputFirstName">First Name</label>
+          <input class="name-inpnut" type="text" name="firstName" id="inputFirstName" placeholder="First Name">
+        </div>
+        <div class="form-input">
+          <label class="name-label" for="inputLastName">Last Name</label>
+          <input class="name-inpnut" type="text" name="lastName" id="inputLastName" placeholder="Last Name">
+        </div>
+        <div class="form-input">
+          <label class="phone-label" for="inputPhone">Phone Number</label>
+          <input class="phone-input" type="tel" name="phone" id="inputPhone" placeholder="123-456-7890">
+        </div>
+        <div class="form-input">
+          <label class="password-label" for="inputPassword">Password</label>
+          <input class="password-input" type="password" name="password" id="inputPassword" placeholder="Password">
+        </div>
+        <button class="submit-button" type="submit">Login</button>
+      </form>
+    </div>
   </main>
 </body>
 </html>
