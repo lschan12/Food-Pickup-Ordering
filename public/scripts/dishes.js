@@ -2,17 +2,17 @@ $(() => {
   loadDishes("All");
 });
 
-const createDishElement = (obj) => {
+const createDishElement = dish => {
   const element = $(`
   <article>
   <div class="dish-detail">
-  <label>${obj.name}</label>
-  <div>${obj.description}</div>
-  <div>$${obj.price / 100}</div>
-  <h1 class="dishId">${obj.id}</h1>
-  <button id='${obj.id}' class="add-to-cart">Add to Cart</button>
+  <label>${dish.name}</label>
+  <div>${dish.description}</div>
+  <div>$${dish.price / 100}</div>
+  <h1 class="dishId">${dish.id}</h1>
+  <button id='${dish.id}' class="add-to-cart">Add to Cart</button>
   </div>
-  <img src="${obj.photo_url}">
+  <img src="${dish.photo_url}">
   </article>
   `);
   return element;
@@ -21,9 +21,9 @@ const createDishElement = (obj) => {
 const renderDishes = (dishes, category) => {
   let filteredDishes = dishes;
   if (category !== null && category !== "All") {
-    filteredDishes = dishes.filter((dish) => dish.category === category);
+    filteredDishes = dishes.filter(dish => dish.category === category);
   }
-  filteredDishes.forEach((dish) => {
+  filteredDishes.forEach(dish => {
     const generatedDish = createDishElement(dish);
     $("#dishes-container").append(generatedDish);
   });
