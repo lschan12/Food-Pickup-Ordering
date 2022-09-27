@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { customerSMS_1, restaurantSMS_1 } = require("../public/scripts/sms");
+const {
+  customerSMS_1,
+  customerSMS_2,
+  customerSMS_3,
+  restaurantSMS_1,
+} = require("../public/scripts/sms");
 
 /**
  * POST # 1: Order Confirmation Notification
@@ -9,33 +14,48 @@ const { customerSMS_1, restaurantSMS_1 } = require("../public/scripts/sms");
  */
 
 router.post("/1", (req, res) => {
-  return restaurantSMS_1(req.body)
-    .then((restaurantSID) => {
-      customerSMS_1(req.body)
-        .then((customerSID) => {
-          res.send(customerSID);
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-      return res.send(restaurantSID)
-    });
+  return restaurantSMS_1(req.body).then((restaurantSID) => {
+    customerSMS_1(req.body)
+      .then((customerSID) => {
+        res.send(customerSID);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+    return res.send(restaurantSID);
+  });
 });
 
 /**
  * POST # 2: ETA Notification
- * Triggered by restaurant (when they EITHER (1) select default 'estimated ETA', OR (2) they specify their own 'custom ETA')
+ * Triggered by restaurant when they specify their own 'custom ETA'.  If default ETA is used, this message is not sent.
  * Customer recieves SMS
  */
 
-router.post("/2", (req, res) => {});
+router.post("/2", (req, res) => {
+  return customerSMS_2(req.body)
+    .then((messageID) => {
+      return res.send(messageID);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
 
 /**
  * POST # 3: 'Order Ready for Pickup' Notification
- * Can be triggered: EITHER (1) manually if we have an 'Order Ready' button for restaurant to click, OR (2) when ETA runs out)
+ * Can be triggered: EITHER (1) manually on 'Order Ready' button click, OR (2) when ETA runs out)
  * Customer recieves SMS
  */
 
-router.post("/3", (req, res) => {});
+ router.post("/3", (req, res) => {
+  return customerSMS_3(req.body)
+    .then((messageID) => {
+      return res.send(messageID);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
 
 module.exports = router;
