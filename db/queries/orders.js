@@ -10,6 +10,7 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
 
   return db.query(queryString)
     .then((data) => {
+      return data;
     })
     .catch((err) => {
       console.log(err.message);
@@ -17,16 +18,14 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
     });
 };
 
-const placeOrder = ({ orderTotal, orderTime, dishIDs }) => {
-  // TO DO: replace '1' with actual userID once we have login auth
-  const userId = "1";
+const placeOrder = ({ customerID, totalPrice, estimatedTime, dishIDs }) => {
 
   // TO DO: add 'actual_prep_time' once we have that functionality built
   const queryString = `
     INSERT INTO orders (user_id, order_time, total_price, est_prep_time)
     VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING *;`;
 
-  const queryParams = [userId, orderTotal, orderTime];
+  const queryParams = [customerID, totalPrice, estimatedTime];
   return db.query(queryString, queryParams)
     .then((result) => {
       return updateOrderDishesTable(dishIDs, result.rows[0].id);

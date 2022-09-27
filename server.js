@@ -37,8 +37,9 @@ const ordersApiRoutes = require('./routes/orders-api');
 const smsApiRoutes = require('./routes/sms-api');
 
 // Render Routes
-const usersRoutes = require('./routes/users');
 const dishesRoutes = require('./routes/dishes');
+
+/* const usersRoutes = require('./routes/users');*/
 
 /** 
  * Mount Routes
@@ -51,8 +52,9 @@ app.use('/api/orders', ordersApiRoutes);
 app.use('/api/sms', smsApiRoutes);
 
 // Render Routes
-app.use('/users', usersRoutes);
 app.use('/dishes', dishesRoutes);
+
+/* app.use('/users', usersRoutes); */
 
 /** 
  * Home Page
