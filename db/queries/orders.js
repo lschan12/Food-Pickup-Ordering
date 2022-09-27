@@ -1,5 +1,12 @@
 const db = require("../connection");
 
+const getOrders = () => {
+  return db.query('SELECT * FROM orders;')
+    .then(data => {
+      return data.rows;
+    });
+};
+
 const updateOrderDishesTable = (dishIDs, orderID) => {
   let queryString = "INSERT INTO order_dishes (dish_id, order_id) VALUES ";
   dishIDs.forEach((id) => {
@@ -20,7 +27,6 @@ const updateOrderDishesTable = (dishIDs, orderID) => {
 
 const placeOrder = ({ customerID, totalPrice, estimatedTime, dishIDs }) => {
 
-  // TO DO: add 'actual_prep_time' once we have that functionality built
   const queryString = `
     INSERT INTO orders (user_id, order_time, total_price, est_prep_time)
     VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING *;`;
@@ -36,4 +42,4 @@ const placeOrder = ({ customerID, totalPrice, estimatedTime, dishIDs }) => {
     });
 };
 
-module.exports = { placeOrder };
+module.exports = { getOrders, placeOrder };
