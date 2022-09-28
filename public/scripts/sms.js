@@ -8,6 +8,7 @@ const client = require('twilio')(accountSid, authToken);
 
 // TO DO: we need a restaurant name (remove the fake one below)
 const restaurantName = 'Lighthouse Bistro';
+const restaurantAddress = '1234 Test Ave, City, BC T7E 0N3'
 
 /** 
    * Restaurant SMS # 1: Order Confirmation Notificaiton
@@ -35,7 +36,7 @@ const restaurantName = 'Lighthouse Bistro';
  * Customer SMS # 1: Order Placed Notification
 */
 
-const customerSMS_1 = ({userName, estimatedTime}) => {
+const customerSMS_1 = ({userName, userPhone, estimatedTime}) => { 
 
     const textString = `Hello ${userName}, thank you for your order at ${restaurantName}!  Your estimated wait time is approx ${estimatedTime} minutes.\
     We will notify you once your order is ready for pickup!`
@@ -43,7 +44,7 @@ const customerSMS_1 = ({userName, estimatedTime}) => {
     return client.messages
     .create({
       from: twilio,
-      to: customer,
+      to: userPhone,
       body: textString,
     })
     .then(message => {
@@ -78,14 +79,14 @@ const customerSMS_2 = ({userName, actualTime}) => {
  * Sent when the ETA is expired, or when the restaurant manually clicks the "Order Ready" button
 */
 
-const customerSMS_3 = ({userName, restaurantAddress}) => {
+const customerSMS_3 = ({first_name, phone}) => {
 
-  const textString = `Hello ${userName}, your order at ${restaurantName} is now ready for pickup!  Pickup location is at ${restaurantAddress}`
+  const textString = `Hello ${first_name}, your order at ${restaurantName} is now ready for pickup!  Pickup location is at ${restaurantAddress}`
 
   return client.messages
   .create({
     from: twilio,
-    to: customer,
+    to: phone,
     body: textString,
   })
   .then(message => {

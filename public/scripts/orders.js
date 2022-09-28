@@ -1,5 +1,6 @@
 $(() => {
   loadOrders('open');
+  readyForPickup();
 });
 
 const createOrderElement = order => {
@@ -33,10 +34,6 @@ const renderOrders = (orders, status) => {
 const loadOrders = (status) => {
   $.get("/api/orders")
     .then((data) => {
-      data.forEach(order => {
-        // console.log(calculateETA(order.order_time));
-        console.log("orderpage", order);
-      })
       $("#orders-container").empty();
       renderOrders(data, status);
     })
@@ -44,6 +41,18 @@ const loadOrders = (status) => {
       console.log(error);
     });
 };
+
+const readyForPickup = () => {
+  $("#orders-container").on("click", ".ready-pickup", function () {
+    let orderId = $(this).attr("id");
+    $.get(`/api/orders/pickup/${orderId}`, function(data) {
+      // console.log("data: ",data);
+      $.post('/api/sms/3',data).then(response => {
+      
+    });
+  });
+});
+}
 
 /**
  * Calculates the current ETA for an order (ie. time remaining until pickup) in hours/minutes
@@ -76,4 +85,4 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
 // (1) writes the 'actual_prep_time' to the database
 // (2) sends SMS # 2 (ETA update) to the customer
     // orderData.orderID = response.rows[0].order_id;
-    //   $.post('/api/sms/2',orderData).then(response => {
+    //  

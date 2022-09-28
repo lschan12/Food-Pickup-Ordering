@@ -2,7 +2,8 @@ const db = require("../connection");
 
 const getOrders = () => {
   return db.query(`
-  SELECT orders.id as id, orders.total_price as price,
+  SELECT orders.id as id, 
+         orders.total_price as price,
          orders.order_time as time,
          orders.est_prep_time as estimated,
          orders.actual_prep_time as actual,
@@ -12,6 +13,19 @@ const getOrders = () => {
   JOIN users ON users.id = user_id;
   `).then(data => {
     return data.rows;
+  });
+};
+
+const getOrderForPickup = (orderID) => {
+  return db.query(`
+  SELECT orders.id as id, 
+         users.first_name as first_name,
+         users.phone_number as phone
+  FROM orders
+  JOIN users ON users.id = user_id
+  WHERE orders.id = $1;
+  `,[orderID]).then(data => {
+    return data.rows[0];
   });
 };
 
@@ -60,4 +74,4 @@ const placeOrder = ({ userId, totalPrice, estimatedTime, dishIDs, status }) => {
     });
 };
 
-module.exports = { getOrders, getOrder, placeOrder };
+module.exports = { getOrders, getOrderForPickup, getOrder, placeOrder };

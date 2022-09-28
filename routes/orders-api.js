@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getOrders, getOrder, placeOrder } = require("../db/queries/orders");
+const { getOrders, getOrderForPickup, getOrder, placeOrder } = require("../db/queries/orders");
 
 router.get('/', (req, res) => {
   getOrders()
@@ -16,6 +16,18 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   getOrder(req.params.id)
+    .then(order=> {
+      res.json(order);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});
+
+router.get('/pickup/:id', (req, res) => {
+  getOrderForPickup(req.params.id)
     .then(order=> {
       res.json(order);
     })
