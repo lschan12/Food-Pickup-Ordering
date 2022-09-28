@@ -107,6 +107,7 @@ const calculateEstimatedETA = (cartItems, sum = false) => {
 };
 
 const placeOrder = () => {
+  console.log("userObj: ",userObj);
   $("#place-order").on("click", () => {
     const orderData = {
       userId: userObj.id,
@@ -119,7 +120,8 @@ const placeOrder = () => {
     };
 
     $.post("/api/orders", orderData).then((response) => {
-      // console.log("Order data finished writing to database, response from cart.js: ", response);
+      
+      orderData["orderID"] = response.order_id;
       window.location.replace(`/receipt/${response.order_id}`);
       // POST to database, THEN:
       // (1) redirect to 'order receipt' display (EJS template) => replace 'place order' button with 'create new order' which redirects back to GET /dishes (and clears cart)?
@@ -127,7 +129,7 @@ const placeOrder = () => {
       // (2) display estimated order time inside the cart header (which will be updated once restaurant confirms ETA)
       // code here
       // (3) send SMS # 1 (order confirmation) to restaurant and customer
-      orderData.orderID = response.order_id;
+      
       $.post("/api/sms/1", orderData).then((response) => {});
     });
   });
