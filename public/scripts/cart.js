@@ -31,9 +31,9 @@ const createCartElement = (obj, count) => {
     <div class="item-count">${count}</div>
     <div class="dish-detail">
       <label>${obj.name}</label>
+      <button id='${obj.id}' class="remove-from-cart">Remove</button>
     </div>
     <div>$${(obj.price / 100) * count}</div>
-    <button id='${obj.id}' class="remove-from-cart">Remove</button>
   </article>
   `);
   return element;
