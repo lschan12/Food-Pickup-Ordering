@@ -48,27 +48,23 @@ const loadOrders = (status) => {
 };
 
 /**
- * Calculates the current ETA for an order (ie. time remaining until pickup)
- * @param {SQL timestamp} timestamp The timestamp of when the order was placed
+ * Calculates the current ETA for an order (ie. time remaining until pickup) in hours/minutes
+ * @param {timestamp} sqlTimestamp The timestamp of when the order was placed
  * @param {integer} orderETA An integer representing order's total ETA (in minutes)
- * @returns {string / array?} 
+ * @returns {string} A string containing the hours/minutes remaining until order is ready for pickup
  */
 
-const getCurrentETA = (timestamp, orderETA) => {
+const getCurrentETA = (sqlTimestamp, orderETA) => {
   // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
-  const jsTimestamp = new Date(timestamp.replace(' ','T'));
-
-  // get number of minutes since order was placed
+  const jsTimestamp = new Date(sqlTimestamp.replace(' ','T'));
+  
   const minutesSinceOrder =  (Date.now() - jsTimestamp) / 1000 / 60;
   const currentETA = (orderETA - minutesSinceOrder < 0) ? 0 : orderETA - minutesSinceOrder;
-
-  console.log("minutesSinceOrder: ",minutesSinceOrder);
-  console.log("currentETA: ",currentETA);
+  // const currentETA = orderETA - minutesSinceOrder; 
 
   const hours = Math.floor(currentETA / 60);
   const minutes = Math.round(currentETA % 60, 0);
-
-  // return formatted string
+  
   if (hours === 0) return `${minutes} min`;
   if (hours === 1) return `${hours} hr, ${minutes} min`
   return `${hours} hrs, ${minutes} min`
