@@ -14,6 +14,7 @@
   <!-- App CSS -->
   <link rel="stylesheet" href="/styles/layout.css" />
   <link rel="stylesheet" href="/styles/nav.css" />
+  <link rel="stylesheet" href="/styles/login-register.css" />
   <!-- External JS -->
   <script src="/vendor/jquery-3.0.0.js"></script>
   <!-- App JS -->
@@ -25,27 +26,32 @@
     <%- include('partials/_header') %>
   </nav>
   <main>
-    <form class="form" method="post" action="/api/register">
-      <div class="login-register-title">Register</div>
-      <div class="form-input">
-        <label class="name-label" for="inputFirstName">First Name</label>
-        <input class="name-inpnut" type="text" name="firstName" id="inputFirstName" placeholder="First Name">
+    <div id="form-container">
+      <div id="restaurant-pic">
+        <img src="https://i.imgur.com/WPcy3B6.jpeg">
       </div>
-      <div class="form-input">
-        <label class="name-label" for="inputLastName">Last Name</label>
-        <input class="name-inpnut" type="text" name="lastName" id="inputLastName" placeholder="Last Name">
-      </div>
-      <div class="form-input">
-        <label class="phone-label" for="inputPhone">Phone Number</label>
-        <input class="phone-input" type="tel" name="phone" id="inputPhone" placeholder="123-456-7890">
-      </div>
-      <div class="form-input">
-        <label class="password-label" for="inputPassword">Password</label>
-        <input class="password-input" type="password" name="password" id="inputPassword" placeholder="Password">
-      </div>
-      <button class="submit-button" type="submit">Register</button>
-    </form>
-  </main>
+      <form class="form" method="post" action="/api/register">
+        <div class="login-register-title">Register</div>
+        <div class="form-input">
+          <label class="name-label" for="inputFirstName">First Name</label>
+          <input class="name-inpnut" type="text" name="firstName" id="inputFirstName" placeholder="First Name">
+        </div>
+        <div class="form-input">
+          <label class="name-label" for="inputLastName">Last Name</label>
+          <input class="name-inpnut" type="text" name="lastName" id="inputLastName" placeholder="Last Name">
+        </div>
+        <div class="form-input">
+          <label class="phone-label" for="inputPhone">Phone Number</label>
+          <input class="phone-input" type="tel" name="phone" id="inputPhone" placeholder="123-456-7890">
+        </div>
+        <div class="form-input">
+          <label class="password-label" for="inputPassword">Password</label>
+          <input class="password-input" type="password" name="password" id="inputPassword" placeholder="Password">
+        </div>
+        <button class="submit-button" type="submit">Register</button>
+      </form>
+    </div>
+    </main>
 </body>
 </html>
 
