@@ -13,11 +13,11 @@ const restaurantName = 'Lighthouse Bistro';
    * Restaurant SMS # 1: Order Confirmation Notificaiton
   */
   
- const restaurantSMS_1 = ({orderID, customerName, customerPhone, totalPrice }) => {
+ const restaurantSMS_1 = ({orderID, userName, userPhone, totalPrice }) => {
   
   let time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
 
-  const textString = `New order recieved at ${time} from ${customerName} @ ${customerPhone}.  Total Price: $${totalPrice / 100}.  Order ID: ${orderID}`;
+  const textString = `New order recieved at ${time} from ${userName} @ ${userPhone}.  Total Price: $${totalPrice / 100}.  Order ID: ${orderID}`;
 
   return client.messages
   .create({
@@ -35,9 +35,9 @@ const restaurantName = 'Lighthouse Bistro';
  * Customer SMS # 1: Order Placed Notification
 */
 
-const customerSMS_1 = ({customerName, estimatedTime}) => {
+const customerSMS_1 = ({userName, estimatedTime}) => {
 
-    const textString = `Hello ${customerName}, thank you for your order at ${restaurantName}!  Your estimated wait time is approx ${estimatedTime} minutes.\
+    const textString = `Hello ${userName}, thank you for your order at ${restaurantName}!  Your estimated wait time is approx ${estimatedTime} minutes.\
     We will notify you once your order is ready for pickup!`
   
     return client.messages
@@ -57,9 +57,9 @@ const customerSMS_1 = ({customerName, estimatedTime}) => {
  * (only sent if the restaurant manually specifies an ETA different from the default ETA).
 */
 
-const customerSMS_2 = ({customerName, actualTime}) => {
+const customerSMS_2 = ({userName, actualTime}) => {
 
-  const textString = `Hello ${customerName}, we have an update on your order at ${restaurantName}!  Your order will be ready in approx ${actualTime} minutes.\
+  const textString = `Hello ${userName}, we have an update on your order at ${restaurantName}!  Your order will be ready in approx ${actualTime} minutes.\
   We will notify you once your order is ready for pickup!`
 
   return client.messages
@@ -78,9 +78,9 @@ const customerSMS_2 = ({customerName, actualTime}) => {
  * Sent when the ETA is expired, or when the restaurant manually clicks the "Order Ready" button
 */
 
-const customerSMS_3 = ({customerName, restaurantAddress}) => {
+const customerSMS_3 = ({userName, restaurantAddress}) => {
 
-  const textString = `Hello ${customerName}, your order at ${restaurantName} is now ready for pickup!  Pickup location is at ${restaurantAddress}`
+  const textString = `Hello ${userName}, your order at ${restaurantName} is now ready for pickup!  Pickup location is at ${restaurantAddress}`
 
   return client.messages
   .create({

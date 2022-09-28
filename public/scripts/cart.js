@@ -90,35 +90,24 @@ const calculateEstimatedETA = (cartItems, sum = false) => {
   if (sum) {
     return cartItems.reduce((acc, obj) => acc + obj.prep_time, 0);
   };
-  const factor = 1 + (cartItems.length * 0.05);
+  const factor = 1 + ((cartItems.length - 1) * 0.05);
   const longestETA = cartItems.reduce((acc, obj) => acc < obj.prep_time ? obj.prep_time : acc, 0);
-  console.log('factor: ',factor);
-  console.log('longestETA: ',longestETA);
-  console.log('estimatedETA: ',Math.ceil((( longestETA * factor) / 5)) * 5);
-  alert('checkout the Console Logs');
   return Math.ceil((( longestETA * factor) / 5)) * 5;
 };
 
-
-
 const placeOrder = () => {
-  let orderData = {};
   $("#place-order").on("click", () => {
-    console.log("user:", userObj);
-    orderData = {
-      // database
+    const orderData = {
       userId: userObj.id,
+      userName: userObj.first_name,
+      userPhone: userObj.phone_number,
       totalPrice,
       estimatedTime: calculateEstimatedETA(allCartItems),
       dishIDs: allCartItems.map((dish) => dish.id),
       status: "open",
-      // sms data
-      customerName: userObj.first_name,
-      customerPhone: userObj.phone_number,
     };
-    console.log("order", orderData);
+    
     $.post("/api/orders", orderData).then((response) => {
-      console.log("postResponse", response);
       // console.log("Order data finished writing to database, response from cart.js: ", response);
       window.location.replace(`/receipt/${response.order_id}`);
       // POST to database, THEN:
