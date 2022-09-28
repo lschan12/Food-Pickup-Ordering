@@ -44,12 +44,12 @@ const loadOrders = (status) => {
     });
 };
 
-const calculateETA = (timestamp, orderTime) => {
+const calculateETA = (timestamp, orderETA) => {
   // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
   const jsTimestamp = new Date(timestamp.replace(' ','T'));
   // get amount of time since order was placed
   const totalMinutesElapsed =  (Date.now() - jsTimestamp) / 1000 / 60;
-
+  
 
   const hours = Math.floor(totalMinutesElapsed / 60);
   const minutes = Math.round(totalMinutesElapsed % 60, 0);

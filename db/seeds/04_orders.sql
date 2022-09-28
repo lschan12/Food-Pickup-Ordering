@@ -1,7 +1,7 @@
 -- Orders table seeds
 
 INSERT INTO orders (user_id, total_price, est_prep_time, actual_prep_time) VALUES 
-(1, 10259, 45, 45);
+(1, 10259, 0, 45);
 
 
 

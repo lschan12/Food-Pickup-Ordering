@@ -4,13 +4,12 @@ $(() => {
   placeOrder();
 });
 
-
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
 let userObj = {};
 const getUserObj = () => {
-  $.get("/api/users", function(data) {
+  $.get("/api/users", function (data) {
     userObj = data;
   });
 };
@@ -47,7 +46,9 @@ const renderCartElement = (array) => {
 };
 
 const loadCart = () => {
-  uniqueCartItems = [...new Map(allCartItems.map((item) => [item.id, item])).values()];
+  uniqueCartItems = [
+    ...new Map(allCartItems.map((item) => [item.id, item])).values(),
+  ];
   $(".cart-detail").empty();
   renderCartElement(uniqueCartItems);
   $(".cart-detail").append(
@@ -57,9 +58,9 @@ const loadCart = () => {
 };
 
 const addToCart = () => {
-  $("#dishes-container").on("click", ".add-to-cart", function() {
+  $("#dishes-container").on("click", ".add-to-cart", function () {
     let productId = $(this).attr("id");
-    $.get(`/api/dishes/${productId}`, function(data) {
+    $.get(`/api/dishes/${productId}`, function (data) {
       totalPrice += Number(data.price);
       allCartItems.push(data);
       loadCart();
@@ -68,7 +69,7 @@ const addToCart = () => {
 };
 
 const removeFromCart = () => {
-  $(".remove-from-cart").on("click", function() {
+  $(".remove-from-cart").on("click", function () {
     const removeID = $(this).attr("id");
 
     let i = allCartItems.length;
@@ -85,17 +86,32 @@ const removeFromCart = () => {
   });
 };
 
+const calculateEstimatedETA = (cartItems, sum = false) => {
+  if (sum) {
+    return cartItems.reduce((acc, obj) => acc + obj.prep_time, 0);
+  };
+  const factor = 1 + (cartItems.length * 0.05);
+  const longestETA = cartItems.reduce((acc, obj) => acc < obj.prep_time ? obj.prep_time : acc, 0);
+  console.log('factor: ',factor);
+  console.log('longestETA: ',longestETA);
+  console.log('estimatedETA: ',Math.ceil((( longestETA * factor) / 5)) * 5);
+  alert('checkout the Console Logs');
+  return Math.ceil((( longestETA * factor) / 5)) * 5;
+};
+
+
+
 const placeOrder = () => {
   let orderData = {};
-  $("#place-order").on("click",() => {
+  $("#place-order").on("click", () => {
     console.log("user:", userObj);
     orderData = {
       // database
       userId: userObj.id,
       totalPrice,
-      estimatedTime: allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0),
-      dishIDs: allCartItems.map(dish => dish.id),
-      status: 'open',
+      estimatedTime: calculateEstimatedETA(allCartItems),
+      dishIDs: allCartItems.map((dish) => dish.id),
+      status: "open",
       // sms data
       customerName: userObj.first_name,
       customerPhone: userObj.phone_number,
@@ -112,11 +128,8 @@ const placeOrder = () => {
       // code here
       // (3) send SMS # 1 (order confirmation) to restaurant and customer
       orderData.orderID = response.order_id;
-      $.post('/api/sms/1',orderData).then(response => {
-      });
+      $.post("/api/sms/1", orderData).then((response) => {});
     });
   });
 };
-    // TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
-
-
+// TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
