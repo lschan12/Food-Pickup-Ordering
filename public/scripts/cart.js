@@ -123,17 +123,8 @@ const placeOrder = () => {
       
       orderData["orderID"] = response.order_id;
       window.location.replace(`/receipt/${response.order_id}`);
-      // POST to database, THEN:
-      // (1) redirect to 'order receipt' display (EJS template) => replace 'place order' button with 'create new order' which redirects back to GET /dishes (and clears cart)?
-      // EJS template
-      // (2) display estimated order time inside the cart header (which will be updated once restaurant confirms ETA)
-      // code here
-      // (3) send SMS # 1 (order confirmation) to restaurant and customer
       
       $.post("/api/sms/1", orderData).then((response) => {});
     });
   });
 };
-// TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
-
-
