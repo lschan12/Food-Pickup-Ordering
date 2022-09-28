@@ -8,6 +8,7 @@ $(() => {
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
+let totalTime = 0;
 let userObj = {};
 const getUserObj = () => {
   $.get("/api/users", function(data) {
@@ -62,6 +63,8 @@ const addToCart = () => {
     $.get(`/api/dishes/${productId}`, function(data) {
       totalPrice += Number(data.price);
       allCartItems.push(data);
+      totalTime += Number(data.prep_time);
+      $("#cart-est").val(totalTime);
       loadCart();
     });
   });

@@ -6,13 +6,13 @@ const createOrderElement = order => {
   const element = $(`
     <article>
     <div class="order-detail">
-    <label>${order.id}</label>
-    <div>$${order.price / 100}</div>
-    <div>${order.first_name}</div>
-    <div>${order.phone}</div>
+    <label>#${order.id}</label>
+    <div>Order Price: $${order.price / 100}</div>
+    <div>Customer Name: ${order.first_name}</div>
+    <div>Customer Phone Number: ${order.phone}</div>
     <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
     </div>
-    <div class="eta">${order.estimated}</div>
+    <div class="eta">ETA: ${order.estimated} minutes</div>
     </article>
     `);
   return element;
