@@ -7,6 +7,7 @@ $(() => {
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
+let totalTime = 0;
 let userObj = {};
 const getUserObj = () => {
   $.get("/api/users", function (data) {
@@ -29,9 +30,9 @@ const createCartElement = (obj, count) => {
     <div class="item-count">${count}</div>
     <div class="dish-detail">
       <label>${obj.name}</label>
+      <button id='${obj.id}' class="remove-from-cart">Remove</button>
     </div>
     <div>$${(obj.price / 100) * count}</div>
-    <button id='${obj.id}' class="remove-from-cart">Remove</button>
   </article>
   `);
   return element;
@@ -63,6 +64,8 @@ const addToCart = () => {
     $.get(`/api/dishes/${productId}`, function (data) {
       totalPrice += Number(data.price);
       allCartItems.push(data);
+      totalTime += Number(data.prep_time);
+      $("#cart-est").val(totalTime);
       loadCart();
     });
   });

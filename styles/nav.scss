@@ -27,6 +27,7 @@ nav {
   }
   #restaurant-nav {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    opacity: 80%;
     width: 100%;
     padding: 2% 5% 2% 5%;
     display: flex;
@@ -78,7 +79,19 @@ nav {
     margin-right: 1em;
     cursor: pointer;
   }
+  p {
+    margin-right: 1%;
+  }
+  .logout {
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 2em;
+    border: none;
+    font-size: 1em;
+    background-origin: rgb(206, 229, 244);
+    cursor: pointer;
+  }
 }
+
 
 .search-cart {
   font-size: 1.2em;

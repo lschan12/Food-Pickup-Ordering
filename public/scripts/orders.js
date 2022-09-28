@@ -9,13 +9,13 @@ const createOrderElement = order => {
   const element = $(`
     <article>
     <div class="order-detail">
-    <label>${order.id}</label>
-    <div>$${order.price / 100}</div>
-    <div>${order.first_name}</div>
-    <div>${order.phone}</div>
+    <label>#${order.id}</label>
+    <div>Order Price: $${order.price / 100}</div>
+    <div>Customer Name: ${order.first_name}</div>
+    <div>Customer Phone Number: ${order.phone}</div>
     <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
     </div>
-    <div class="eta">${currentETA}</div>
+    <div class="eta">ETA: ${currentETA}</div>
     </article>
     `);
   return element;
@@ -60,7 +60,6 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
   
   const minutesSinceOrder =  (Date.now() - jsTimestamp) / 1000 / 60;
   const currentETA = (orderETA - minutesSinceOrder < 0) ? 0 : orderETA - minutesSinceOrder;
-  // const currentETA = orderETA - minutesSinceOrder; 
 
   const hours = Math.floor(currentETA / 60);
   const minutes = Math.round(currentETA % 60, 0);
@@ -69,6 +68,11 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
   if (hours === 1) return `${hours} hr, ${minutes} min`
   return `${hours} hrs, ${minutes} min`
 }
+
+
+
+
+
 
 // TO DO: add click handler for 'ETA Input Box' which does the following:
 // (1) writes the 'actual_prep_time' to the database
