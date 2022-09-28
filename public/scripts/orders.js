@@ -3,6 +3,13 @@ $(() => {
   readyForPickup();
 });
 
+/**
+ * Creates the individual order cards to display in '/orders' (Order Summary Page)
+ * First checks if the restaurant specified a custom ETA, and sets ETA either as custom or the default estimate.
+ * Then gets the current ETA based on the amount of time that has elapsed since the order was placed
+ * Then generates the HTML for the order card
+ */
+
 const createOrderElement = order => {
   const orderETA = (order.actual === 0) ? order.estimated : order.actual;
   const currentETA = getCurrentETA(order.time, orderETA);
@@ -22,14 +29,24 @@ const createOrderElement = order => {
   return element;
 };
 
+/**
+ * Renders all of the order cards to '/orders' (Order Summary Page)
+ * By default, filters to only show the 'open' orders which are not yet ready for pickup 
+ */
+
 const renderOrders = (orders, status) => {
-  let filteredOrders = orders;
   filteredOrders = orders.filter(order => order.status === status);
-  orders.forEach((order) => {
+  filteredOrders.forEach((order) => {
     const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
   });
 };
+
+/**
+ * Loads all of the orders from the database
+ * @param {string} status A string containing the order status to filter the orders by
+ * Empties the current HTML before calling renderOrders function to display the new set of orders
+ */
 
 const loadOrders = (status) => {
   $.get("/api/orders")
@@ -42,14 +59,22 @@ const loadOrders = (status) => {
     });
 };
 
+/**
+ * Click handler for "Ready for Pickup" button on each of the order cards
+ * First queries db to get data specifically for the order
+ * Writes to db to set the order status to 'closed'
+ * Sends SMS # 3 (order ready for pickup) to customer
+ * Re-renders orders
+ */
+
 const readyForPickup = () => {
   $("#orders-container").on("click", ".ready-pickup", function () {
     let orderId = $(this).attr("id");
-    $.get(`/api/orders/pickup/${orderId}`, function(data) {
-      // console.log("data: ",data);
-      $.post('/api/sms/3',data).then(response => {
-      
-    });
+
+    $.get(`/api/orders/pickup/${orderId}`).then(data => {
+      $.post(`/api/orders/${orderId}`, data).then(response => {});
+      $.post('/api/sms/3',data).then(response => {});
+      loadOrders('open');
   });
 });
 }
@@ -75,10 +100,6 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
   if (hours === 1) return `${hours} hr, ${minutes} min`
   return `${hours} hrs, ${minutes} min`
 }
-
-
-
-
 
 
 // TO DO: add click handler for 'ETA Input Box' which does the following:

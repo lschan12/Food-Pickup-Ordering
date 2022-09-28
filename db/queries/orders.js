@@ -7,6 +7,7 @@ const getOrders = () => {
          orders.order_time as time,
          orders.est_prep_time as estimated,
          orders.actual_prep_time as actual,
+         orders.status,
          users.first_name as first_name,
          users.phone_number as phone
   FROM orders
@@ -74,4 +75,13 @@ const placeOrder = ({ userId, totalPrice, estimatedTime, dishIDs, status }) => {
     });
 };
 
-module.exports = { getOrders, getOrderForPickup, getOrder, placeOrder };
+const changeOrderStatus = (orderId) => {
+  return db.query(`
+  UPDATE orders SET status = 'closed' WHERE id = $1;
+  `, [orderId])
+    .then((data) => {
+      return data.rows[0];
+    });
+};
+
+module.exports = { getOrders, getOrderForPickup, getOrder, placeOrder, changeOrderStatus };

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getOrders, getOrderForPickup, getOrder, placeOrder } = require("../db/queries/orders");
+const { getOrders, getOrderForPickup, getOrder, placeOrder, changeOrderStatus } = require("../db/queries/orders");
 
 router.get('/', (req, res) => {
   getOrders()
@@ -46,6 +46,18 @@ router.post("/", (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
+    });
+});
+
+router.post('/:id', (req, res) => {
+  changeOrderStatus(req.params.id)
+    .then(order=> {
+      res.json(order);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
     });
 });
 
