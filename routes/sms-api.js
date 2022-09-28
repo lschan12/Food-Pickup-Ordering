@@ -14,7 +14,8 @@ const {
  */
 
 router.post("/1", (req, res) => {
-  return restaurantSMS_1(req.body).then((restaurantSID) => {
+  return restaurantSMS_1(req.body)
+  .then((restaurantSID) => {
     customerSMS_1(req.body)
       .then((customerSID) => {
         res.send(customerSID);
@@ -23,6 +24,10 @@ router.post("/1", (req, res) => {
         res.status(500).json({ error: err.message });
       });
     return res.send(restaurantSID);
+  })
+  .catch((err) => {
+    console.log("Error message: ",err);
+    res.status(500).json({ error: err.message });
   });
 });
 
