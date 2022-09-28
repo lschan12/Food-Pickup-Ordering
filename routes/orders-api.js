@@ -14,6 +14,18 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+  getOrder(req.params.id)
+    .then(order=> {
+      res.json(order);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});
+
 router.post("/", (req, res) => {
   placeOrder(req.body)
     .then((response) => {

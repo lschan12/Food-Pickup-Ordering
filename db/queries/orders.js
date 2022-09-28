@@ -14,6 +14,16 @@ const getOrders = () => {
   });
 };
 
+const getOrder = (orderId) => {
+  return db.query(`
+  SELECT * FROM orders
+  WHERE id = $1
+  `, [orderId])
+    .then((data) => {
+      return data.rows[0];
+    });
+};
+
 const updateOrderDishesTable = (dishIDs, orderID) => {
   let queryString = "INSERT INTO order_dishes (dish_id, order_id) VALUES ";
   dishIDs.forEach((id) => {
@@ -49,5 +59,4 @@ const placeOrder = ({ userId, totalPrice, estimatedTime, dishIDs, status }) => {
     });
 };
 
-
-module.exports = { getOrders, placeOrder };
+module.exports = { getOrders, getOrder, placeOrder };

@@ -1,9 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const dishesQueries = require('../db/queries/dishes');
+const { getDishes, getDish } = require('../db/queries/dishes');
 
 router.get('/', (req, res) => {
-  dishesQueries.getDishes()
+  getDishes()
     .then(dishes => {
       res.json(dishes);
     })
@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  dishesQueries.getDish(req.params.id)
+  getDish(req.params.id)
     .then(dish => {
       res.json(dish);
     })
