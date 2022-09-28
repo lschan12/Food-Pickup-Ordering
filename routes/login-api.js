@@ -3,10 +3,8 @@ const router  = express.Router();
 const userQueries = require('../db/queries/login');
 
 router.post('/', (req, res) => {
-  console.log(req.body);
   userQueries.getUserByPhone(req.body.phone)
     .then(data => {
-      console.log(data);
       req.session.user_id = data.id;
       if (data.admin) {
         res.redirect('../orders');
