@@ -13,7 +13,6 @@ router.get('/:id', (req, res) => {
       let totalTime = data.reduce((sum, {time, qty}) => sum + time * qty, 0);
       templateVars["totalPrice"] = totalPrice / 100;
       templateVars["totalTime"] = totalTime;
-      console.log(templateVars);
       res.render('receipt', templateVars);
     });
 });

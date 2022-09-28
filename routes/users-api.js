@@ -10,9 +10,9 @@ const router  = express.Router();
 const userQueries = require('../db/queries/users');
 
 router.get('/', (req, res) => {
-  userQueries.getUsers()
+  userQueries.getUsers(req.session.user_id)
     .then(users => {
-      res.json({ users });
+      res.json(users);
     })
     .catch(err => {
       res

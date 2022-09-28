@@ -1,11 +1,19 @@
 $(() => {
-  placeOrder();
+  getUserObj();
   addToCart();
+  placeOrder();
 });
+
 
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
+let userObj = {};
+const getUserObj = () => {
+  $.get("/api/users", function(data) {
+    userObj = data;
+  });
+};
 
 const countFunction = (array) => {
   const counter = {};
@@ -78,36 +86,37 @@ const removeFromCart = () => {
 };
 
 const placeOrder = () => {
+  let orderData = {};
   $("#place-order").on("click",() => {
-    
-    // TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
-    const orderData = { 
+    console.log("user:", userObj);
+    orderData = {
       // database
-      customerID: 1,
-      totalPrice, 
+      userId: userObj.id,
+      totalPrice,
       estimatedTime: allCartItems.reduce((acc,obj) => acc + obj.prep_time, 0),
       dishIDs: allCartItems.map(dish => dish.id),
       status: 'open',
-      // sms data 
-      customerName: 'Bob Smith', 
-      customerPhone: '(403)878-2903', 
-    }
-
+      // sms data
+      customerName: userObj.first_name,
+      customerPhone: userObj.phone_number,
+    };
+    console.log("order", orderData);
     $.post("/api/orders", orderData).then((response) => {
+      console.log("postResponse", response);
       // console.log("Order data finished writing to database, response from cart.js: ", response);
       window.location.replace(`/receipt/${response.order_id}`);
       // POST to database, THEN:
-      
       // (1) redirect to 'order receipt' display (EJS template) => replace 'place order' button with 'create new order' which redirects back to GET /dishes (and clears cart)?
-              // EJS template
-
+      // EJS template
       // (2) display estimated order time inside the cart header (which will be updated once restaurant confirms ETA)
-              // code here
-      
+      // code here
       // (3) send SMS # 1 (order confirmation) to restaurant and customer
-      orderData.orderID = response.rows[0].order_id;
+      orderData.orderID = response.order_id;
       $.post('/api/sms/1',orderData).then(response => {
       });
     });
   });
 };
+    // TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
+
+

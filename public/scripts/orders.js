@@ -4,17 +4,17 @@ $(() => {
 
 const createOrderElement = order => {
   const element = $(`
-    // <article>
-    // <div class="order-detail">
-    // <label>${order.name}</label>
-    // <div>${order.description}</div>
-    // <div>$${order.price / 100}</div>
-    // <h1 class="orderId">${order.id}</h1>
-    // <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
-    // </div>
-    // <img src="${order.photo_url}">
-    // </article>
-    // `);
+    <article>
+    <div class="order-detail">
+    <label>${order.id}</label>
+    <div>$${order.price / 100}</div>
+    <div>${order.first_name}</div>
+    <div>${order.phone}</div>
+    <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
+    </div>
+    <div class="eta">${order.estimated}</div>
+    </article>
+    `);
   return element;
 };
 
@@ -23,7 +23,7 @@ const renderOrders = (orders, status) => {
   if (status !== null && status !== "All") {
     filteredOrders = orders.filter(order => order.status === status);
   }
-  filteredOrders.forEach((order) => {
+  orders.forEach((order) => {
     const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
   });
@@ -33,10 +33,11 @@ const loadOrders = (status) => {
   $.get("/api/orders")
     .then((data) => {
       data.forEach(order => {
-        console.log(calculateETA(order.order_time));
+        // console.log(calculateETA(order.order_time));
+        console.log("orderpage", order);
       })
-      // $("#orders-container").empty();
-      // renderOrders(data, status);
+      $("#orders-container").empty();
+      renderOrders(data, status);
     })
     .catch((error) => {
       console.log(error);
@@ -48,10 +49,10 @@ const calculateETA = (timestamp, orderTime) => {
   const jsTimestamp = new Date(timestamp.replace(' ','T'));
   // get amount of time since order was placed
   const totalMinutesElapsed =  (Date.now() - jsTimestamp) / 1000 / 60;
-  
 
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = Math.round(totalMinutes % 60, 0);
+
+  const hours = Math.floor(totalMinutesElapsed / 60);
+  const minutes = Math.round(totalMinutesElapsed % 60, 0);
 
   // return formatted string
   if (hours === 0) return `${minutes} min`;

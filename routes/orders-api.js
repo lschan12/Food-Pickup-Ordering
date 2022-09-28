@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const ordersQueries = require('../db/queries/orders');
-const { placeOrder } = require("../db/queries/orders");
+const { placeOrder, getOrders } = require("../db/queries/orders");
 
 router.get('/', (req, res) => {
-  ordersQueries.getOrders()
+  getOrders()
     .then(orders => {
       res.json(orders);
     })
@@ -18,11 +17,12 @@ router.get('/', (req, res) => {
 router.post("/", (req, res) => {
   placeOrder(req.body)
     .then((response) => {
+      console.log("response", response);
       res.json(response);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-  });
+});
 
 module.exports = router;

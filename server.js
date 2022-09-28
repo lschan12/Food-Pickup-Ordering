@@ -87,7 +87,7 @@ app.use('/logout', logoutRoutes);
 // Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
-  res.redirect('dishes');
+  res.redirect('login');
 });
 
 app.listen(PORT, () => {
