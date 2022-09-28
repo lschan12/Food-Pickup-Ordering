@@ -133,3 +133,5 @@ const placeOrder = () => {
   });
 };
 // TO DO: once we have cookies, pull all customer data from cookie and replace filler values below
+
+

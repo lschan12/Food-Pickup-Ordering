@@ -23,9 +23,7 @@ const createOrderElement = order => {
 
 const renderOrders = (orders, status) => {
   let filteredOrders = orders;
-  if (status !== null && status !== "All") {
-    filteredOrders = orders.filter(order => order.status === status);
-  }
+  filteredOrders = orders.filter(order => order.status === status);
   orders.forEach((order) => {
     const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
@@ -57,13 +55,13 @@ const loadOrders = (status) => {
 const getCurrentETA = (sqlTimestamp, orderETA) => {
   // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
   const jsTimestamp = new Date(sqlTimestamp.replace(' ','T'));
-  
+
   const minutesSinceOrder =  (Date.now() - jsTimestamp) / 1000 / 60;
   const currentETA = (orderETA - minutesSinceOrder < 0) ? 0 : orderETA - minutesSinceOrder;
 
   const hours = Math.floor(currentETA / 60);
   const minutes = Math.round(currentETA % 60, 0);
-  
+
   if (hours === 0) return `${minutes} min`;
   if (hours === 1) return `${hours} hr, ${minutes} min`
   return `${hours} hrs, ${minutes} min`
