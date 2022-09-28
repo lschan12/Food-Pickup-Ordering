@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { placeOrder, getOrders } = require("../db/queries/orders");
+const { getOrders, getOrder, placeOrder } = require("../db/queries/orders");
 
 router.get('/', (req, res) => {
   getOrders()

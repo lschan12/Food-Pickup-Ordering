@@ -3,6 +3,7 @@ const db = require("../connection");
 const getOrders = () => {
   return db.query(`
   SELECT orders.id as id, orders.total_price as price,
+         orders.order_time as time,
          orders.est_prep_time as estimated,
          orders.actual_prep_time as actual,
          users.first_name as first_name,

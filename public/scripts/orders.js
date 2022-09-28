@@ -3,6 +3,9 @@ $(() => {
 });
 
 const createOrderElement = order => {
+  const orderETA = (order.actual === 0) ? order.estimated : order.actual;
+  const currentETA = getCurrentETA(order.time, orderETA);
+
   const element = $(`
     <article>
     <div class="order-detail">
@@ -12,7 +15,7 @@ const createOrderElement = order => {
     <div>${order.phone}</div>
     <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
     </div>
-    <div class="eta">${order.estimated}</div>
+    <div class="eta">${currentETA}</div>
     </article>
     `);
   return element;
@@ -44,15 +47,26 @@ const loadOrders = (status) => {
     });
 };
 
-const calculateETA = (timestamp, orderETA) => {
+/**
+ * Calculates the current ETA for an order (ie. time remaining until pickup)
+ * @param {SQL timestamp} timestamp The timestamp of when the order was placed
+ * @param {integer} orderETA An integer representing order's total ETA (in minutes)
+ * @returns {string / array?} 
+ */
+
+const getCurrentETA = (timestamp, orderETA) => {
   // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
   const jsTimestamp = new Date(timestamp.replace(' ','T'));
-  // get amount of time since order was placed
-  const totalMinutesElapsed =  (Date.now() - jsTimestamp) / 1000 / 60;
-  
 
-  const hours = Math.floor(totalMinutesElapsed / 60);
-  const minutes = Math.round(totalMinutesElapsed % 60, 0);
+  // get number of minutes since order was placed
+  const minutesSinceOrder =  (Date.now() - jsTimestamp) / 1000 / 60;
+  const currentETA = (orderETA - minutesSinceOrder < 0) ? 0 : orderETA - minutesSinceOrder;
+
+  console.log("minutesSinceOrder: ",minutesSinceOrder);
+  console.log("currentETA: ",currentETA);
+
+  const hours = Math.floor(currentETA / 60);
+  const minutes = Math.round(currentETA % 60, 0);
 
   // return formatted string
   if (hours === 0) return `${minutes} min`;
@@ -62,6 +76,6 @@ const calculateETA = (timestamp, orderETA) => {
 
 // TO DO: add click handler for 'ETA Input Box' which does the following:
 // (1) writes the 'actual_prep_time' to the database
-// (2) sends SMS # 2 to the client
-  // orderData.orderID = response.rows[0].order_id;
-  //     $.post('/api/sms/2',orderData).then(response => {
+// (2) sends SMS # 2 (ETA update) to the customer
+    // orderData.orderID = response.rows[0].order_id;
+    //   $.post('/api/sms/2',orderData).then(response => {

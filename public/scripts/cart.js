@@ -86,13 +86,21 @@ const removeFromCart = () => {
   });
 };
 
+/**
+ * Calculates a realistic estimated ETA that scales with order size
+ * @param {[{}]} cartItems An array of objects containing all of the cart items
+ * @param {bool} sum A boolean, if set to true, will return the total sum of each cart item's individual ETA
+ * @returns {integer} The order's estimated ETA, in minutes (rounded up to nearest 5)
+ */
+
 const calculateEstimatedETA = (cartItems, sum = false) => {
   if (sum) {
     return cartItems.reduce((acc, obj) => acc + obj.prep_time, 0);
   };
   const factor = 1 + ((cartItems.length - 1) * 0.05);
   const longestETA = cartItems.reduce((acc, obj) => acc < obj.prep_time ? obj.prep_time : acc, 0);
-  return Math.ceil((( longestETA * factor) / 5)) * 5;
+  const estimatedETA = Math.ceil((( longestETA * factor) / 5)) * 5;
+  return estimatedETA;
 };
 
 const placeOrder = () => {
@@ -106,7 +114,7 @@ const placeOrder = () => {
       dishIDs: allCartItems.map((dish) => dish.id),
       status: "open",
     };
-    
+
     $.post("/api/orders", orderData).then((response) => {
       // console.log("Order data finished writing to database, response from cart.js: ", response);
       window.location.replace(`/receipt/${response.order_id}`);
