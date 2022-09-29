@@ -3,4 +3,7 @@
 INSERT INTO categories (name) VALUES 
 ('Pizza'), 
 ('Pasta'), 
-('Appetizer');
+('Sandwiches'),
+('Appetizers'),
+('Desserts'),
+('Drinks')
