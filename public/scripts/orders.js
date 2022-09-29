@@ -22,15 +22,17 @@ const createOrderElement = order => {
     <div>Order Price: $${order.price / 100}</div>
     <div>Customer Name: ${order.first_name}</div>
     <div>Customer Phone Number: ${order.phone}</div>
-    <div>
+    <div class="restaurant-input">
       <form class="update-actual">
       <input type="number" name="actual">
       <button id="submit-${order.id}" type="submit">Update</button>
       </form>
+      </div>
+      </div>
+      <div>
+      <div class="eta">ETA: ${currentETA}</div>
       <button id='ready-${order.id}' class="ready-pickup">Ready for pickup</button>
-    </div>
-    </div>
-    <div class="eta">ETA: ${currentETA}</div>
+      </div>
     </article>
     `);
   return element;

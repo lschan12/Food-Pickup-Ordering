@@ -3,8 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgb(0,0,96);
-  background: linear-gradient(90deg, rgba(0,0,96,1) 0%, rgba(128,128,171,1) 50%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(212,100,85,1) 0%, rgba(199,162,116,1) 51%, rgba(236,158,30,1) 100%);
 }
 
 .container {
@@ -47,19 +46,47 @@
           margin-bottom: 2%;
           font-size: 1em;
       }
-      button {
-        width: 50%;
+      .restaurant-input {
+        display: flex;
+        flex-direction: row;
+        form {
+          input {
+            border: none;
+            border-bottom: 1px solid black;
+            appearance: none;
+            margin-bottom: 5%
+          }
+        };
+        button {
+          width: 50%;
+          padding: 0.5em 1em 0.5em 1em;
+          border-radius: 2em;
+          border: none;
+          font-size: 0.8em;
+          background-color: rgb(206, 229, 244);
+          cursor: pointer;
+        }
+        button:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+    .eta {
+      font-weight: bold;
+      font-size: 2em;
+      margin-bottom: 5%;
+    }
+    .ready-pickup {
+        width: 100%;
         padding: 0.5em 1em 0.5em 1em;
         border-radius: 2em;
         border: none;
         font-size: 0.8em;
         background-color: rgb(206, 229, 244);
         cursor: pointer;
-      }
     }
-    .eta {
-      font-weight: bold;
-      font-size: 2em;
+    .ready-pickup:hover {
+      transform: scale(1.05);
     }
   }
   article:hover {

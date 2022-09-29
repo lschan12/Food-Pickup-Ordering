@@ -1,6 +1,5 @@
 body {
-  background: rgb(0,0,96);
-  background: linear-gradient(90deg, rgba(0,0,96,1) 0%, rgba(128,128,171,1) 50%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, rgba(212,100,85,1) 0%, rgba(199,162,116,1) 51%, rgba(236,158,30,1) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,9 +52,8 @@ main {
       font-size: 2em;
       span {
       font-weight: bold;
-      color: rgb(0,0,96);
-      color: linear-gradient(90deg, rgba(0,0,96,1) 0%, rgba(128,128,171,1) 50%, rgba(0,212,255,1) 100%);
-      }
+      color: rgb(250, 154, 65);
+    }
     }
     .form-input {
       display: flex;
@@ -77,8 +75,7 @@ main {
       border: none;
       border-radius: 0.2em;
       color: white;
-      background: rgb(0,0,96);
-      background: linear-gradient(90deg, rgba(0,0,96,1) 0%, rgba(128,128,171,1) 50%, rgba(0,212,255,1) 100%);
+      background: linear-gradient(90deg, rgba(212,100,85,1) 0%, rgba(199,162,116,1) 51%, rgba(236,158,30,1) 100%);
       cursor: pointer;
     }
     button:hover {

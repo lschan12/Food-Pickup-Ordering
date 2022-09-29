@@ -1,5 +1,7 @@
 $(() => {
   loadDishes("All");
+  backToTop();
+  goToCart();
 });
 
 const createDishElement = dish => {
@@ -38,4 +40,33 @@ const loadDishes = (category) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+// Detect if user is at top of page; if not, display back-to-top button and hide compose tweet button in nav bar
+const showButton = () => {
+  $(window).scroll(function() {
+    if ($(this).scrollTop() !== 0) {
+      $("#back-to-top").show(300);
+    } else {
+      $("#back-to-top").hide("slow");
+    }
+  });
+};
+
+// Back-to-top button to scroll to top of page and focus on form text area
+const backToTop = () => {
+  $("#back-to-top").hide();
+  showButton();
+  $("#back-to-top").click(function() {
+    $("html, body").animate({scrollTop: 0}, "slow");
+    return false;
+  });
+};
+
+const goToCart = () => {
+  $("#cart").click(function() {
+    $("html, body").animate({
+      scrollTop: $("#order-summary").position().top
+    });
+  });
 };

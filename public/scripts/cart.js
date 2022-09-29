@@ -7,7 +7,7 @@ $(() => {
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
-let totalTime = 0;
+// let totalTime = 0;
 let userObj = {};
 const getUserObj = () => {
   $.get("/api/users", function (data) {
@@ -64,7 +64,7 @@ const addToCart = () => {
     $.get(`/api/dishes/${productId}`, function (data) {
       totalPrice += Number(data.price);
       allCartItems.push(data);
-      totalTime += Number(data.prep_time);
+      let totalTime = calculateEstimatedETA(allCartItems);
       $("#cart-est").val(totalTime);
       loadCart();
     });
@@ -85,6 +85,8 @@ const removeFromCart = () => {
     uniqueCartItems.forEach((item, index, array) => {
       if (item.id === Number(removeID)) array.splice(index, 1);
     });
+    let totalTime = calculateEstimatedETA(allCartItems);
+    $('#cart-est').val(totalTime);
     loadCart();
   });
 };
@@ -120,10 +122,10 @@ const placeOrder = () => {
     };
 
     $.post("/api/orders", orderData).then((response) => {
-      
+
       orderData["orderID"] = response.order_id;
       window.location.replace(`/receipt/${response.order_id}`);
-      
+
       $.post("/api/sms/1", orderData).then((response) => {});
     });
   });
