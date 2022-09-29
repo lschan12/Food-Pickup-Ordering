@@ -57,9 +57,22 @@ const renderOrders = (orders, status) => {
 
 const loadOrders = (status) => {
   $.get("/api/orders")
-    .then((data) => {
+    .then((orders) => {  
+      let etas = orders.map(order => [(order.actual === 0) ? order.estimated : order.actual, order.id]);
+      let sorted = etas.sort((a, b) => a[0] - b[0]);
+      let sortedOrders = []
+
+      sorted.forEach(order => {
+        sortedOrders.push(orders.filter(obj => obj.id === order[1])[0]);
+      })
+      
+      
+      console.log('etas array:', etas);
+      console.log('sorted array:', sorted);
+      console.log('sorted orders (end product):', sortedOrders);
+
       $("#orders-container").empty();
-      renderOrders(data, status);
+      renderOrders(sortedOrders, status);
     })
     .catch((error) => {
       console.log(error);
