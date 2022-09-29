@@ -57,7 +57,7 @@ const renderOrders = (orders, status) => {
 
 const loadOrders = (status) => {
   $.get("/api/orders")
-    .then((orders) => {  
+    .then((orders) => {
       let etas = orders.map(order => [(order.actual === 0) ? order.estimated : order.actual, order.id]);
       let sorted = etas.sort((a, b) => a[0] - b[0]);
       let sortedOrders = []
@@ -65,8 +65,8 @@ const loadOrders = (status) => {
       sorted.forEach(order => {
         sortedOrders.push(orders.filter(obj => obj.id === order[1])[0]);
       })
-      
-      
+
+
       console.log('etas array:', etas);
       console.log('sorted array:', sorted);
       console.log('sorted orders (end product):', sortedOrders);
@@ -89,8 +89,9 @@ const loadOrders = (status) => {
 
 const readyForPickup = () => {
   $("#orders-container").on("click", ".ready-pickup", function () {
-    let orderId = $(this).attr("id");
-
+    let stringId = $(this).attr("id");
+    let orderId = stringId.split('-')[1];
+    console.log("orderid", orderId);
     $.get(`/api/orders/pickup/${orderId}`).then(data => {
       $.post(`/api/orders/${orderId}`, data).then(response => {});
       $.post('/api/sms/3',data).then(response => {});
