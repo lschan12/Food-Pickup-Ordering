@@ -1,5 +1,5 @@
 $(() => {
-  loadOrders('open');
+  loadOrders("open");
   readyForPickup();
   updateActualPrepTime();
 });
@@ -11,9 +11,12 @@ $(() => {
  * Then generates the HTML for the order card
  */
 
-const createOrderElement = order => {
-  const orderETA = (order.actual === 0) ? order.estimated : order.actual;
-  const currentETA = getCurrentETA(order.time, orderETA);
+const createOrderElement = (order) => {
+  const orderETA =
+    order.actual === 0
+      ? getCurrentETA(order.time, order.estimated)
+      : convertToString(order.actual);
+  // const currentETA = getCurrentETA(order.time, orderETA);
 
   const element = $(`
     <article>
@@ -27,10 +30,12 @@ const createOrderElement = order => {
       <input type="number" name="actual">
       <button id="submit-${order.id}" type="submit">Update</button>
       </form>
-      <button id='ready-${order.id}' class="ready-pickup">Ready for pickup</button>
+      <button id='ready-${
+        order.id
+      }' class="ready-pickup">Ready for pickup</button>
     </div>
     </div>
-    <div class="eta">ETA: ${currentETA}</div>
+    <div class="eta">ETA: ${orderETA}</div>
     </article>
     `);
   return element;
@@ -42,7 +47,7 @@ const createOrderElement = order => {
  */
 
 const renderOrders = (orders, status) => {
-  const filteredOrders = orders.filter(order => order.status === status);
+  const filteredOrders = orders.filter((order) => order.status === status);
   filteredOrders.forEach((order) => {
     const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
@@ -58,18 +63,20 @@ const renderOrders = (orders, status) => {
 const loadOrders = (status) => {
   $.get("/api/orders")
     .then((orders) => {
-      let etas = orders.map(order => [(order.actual === 0) ? order.estimated : order.actual, order.id]);
+      let etas = orders.map((order) => [
+        order.actual === 0 ? order.estimated : order.actual,
+        order.id,
+      ]);
       let sorted = etas.sort((a, b) => a[0] - b[0]);
-      let sortedOrders = []
+      let sortedOrders = [];
 
-      sorted.forEach(order => {
-        sortedOrders.push(orders.filter(obj => obj.id === order[1])[0]);
-      })
+      sorted.forEach((order) => {
+        sortedOrders.push(orders.filter((obj) => obj.id === order[1])[0]);
+      });
 
-
-      console.log('etas array:', etas);
-      console.log('sorted array:', sorted);
-      console.log('sorted orders (end product):', sortedOrders);
+      console.log("etas array:", etas);
+      console.log("sorted array:", sorted);
+      console.log("sorted orders (end product):", sortedOrders);
 
       $("#orders-container").empty();
       renderOrders(sortedOrders, status);
@@ -90,12 +97,12 @@ const loadOrders = (status) => {
 const readyForPickup = () => {
   $("#orders-container").on("click", ".ready-pickup", function () {
     let stringId = $(this).attr("id");
-    let orderId = stringId.split('-')[1];
+    let orderId = stringId.split("-")[1];
     console.log("orderid", orderId);
-    $.get(`/api/orders/pickup/${orderId}`).then(data => {
-      $.post(`/api/orders/${orderId}`, data).then(response => {});
-      $.post('/api/sms/3',data).then(response => {});
-      loadOrders('open');
+    $.get(`/api/orders/pickup/${orderId}`).then((data) => {
+      $.post(`/api/orders/${orderId}`, data).then((response) => {});
+      $.post("/api/sms/3", data).then((response) => {});
+      loadOrders("open");
     });
   });
 };
@@ -106,46 +113,46 @@ const readyForPickup = () => {
  * @param {integer} orderETA An integer representing order's total ETA (in minutes)
  * @returns {string} A string containing the hours/minutes remaining until order is ready for pickup
  */
+const convertToString = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  const remainder = Math.round(minutes % 60, 0);
+  if (hours === 0) return `${remainder} min`;
+  if (hours === 1) return `${hours} hr, ${remainder} min`;
+  return `${hours} hrs, ${remainder} min`;
+};
 
 const getCurrentETA = (sqlTimestamp, orderETA) => {
   // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
-  const jsTimestamp = new Date(sqlTimestamp.replace(' ','T'));
+  const jsTimestamp = new Date(sqlTimestamp.replace(" ", "T"));
 
-  const minutesSinceOrder =  (Date.now() - jsTimestamp) / 1000 / 60;
-  const currentETA = (orderETA - minutesSinceOrder < 0) ? 0 : orderETA - minutesSinceOrder;
+  const minutesSinceOrder = (Date.now() - jsTimestamp) / 1000 / 60;
+  const currentETA = orderETA - minutesSinceOrder < 0 ? 0 : orderETA - minutesSinceOrder;
 
-  const hours = Math.floor(currentETA / 60);
-  const minutes = Math.round(currentETA % 60, 0);
-
-  if (hours === 0) return `${minutes} min`;
-  if (hours === 1) return `${hours} hr, ${minutes} min`
-  return `${hours} hrs, ${minutes} min`
-}
+  return convertToString(currentETA);
+};
 
 const updateActualPrepTime = () => {
-  $("#orders-container").on("submit", ".update-actual", function(event) {
+  $("#orders-container").on("submit", ".update-actual", function (event) {
     event.preventDefault();
     console.log("form submitted");
     let stringId = $(this).nextAll("button").attr("id");
     console.log("stringId", stringId);
     let data = {
-      orderId: stringId.split('-')[1],
-      actual: $(this).find("input").val()
+      orderId: stringId.split("-")[1],
+      actual: $(this).find("input").val(),
     };
-    $.post(`/api/orders/actual/${data.orderId}`, data).then(response => {
-      $.get(`/api/orders/pickup/${data.orderId}`).then(smsData => {
-        $.post('/api/sms/2',smsData).then(response => {
+    $.post(`/api/orders/actual/${data.orderId}`, data).then((response) => {
+      $.get(`/api/orders/pickup/${data.orderId}`).then((smsData) => {
+        $.post("/api/sms/2", smsData).then((response) => {
           console.log(response);
         });
-        loadOrders('open');
-
+        loadOrders("open");
       });
     });
   });
 };
 //   });
 // };
-
 
 // method="post" action='/api/orders/actual/${order.id}
 
@@ -160,5 +167,5 @@ const updateActualPrepTime = () => {
 // TO DO: add click handler for 'ETA Input Box' which does the following:
 // (1) writes the 'actual_prep_time' to the database
 // (2) sends SMS # 2 (ETA update) to the customer
-    // orderData.orderID = response.rows[0].order_id;
-    //
+// orderData.orderID = response.rows[0].order_id;
+//
