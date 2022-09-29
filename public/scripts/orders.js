@@ -1,6 +1,7 @@
 $(() => {
   loadOrders('open');
   readyForPickup();
+  updateActualPrepTime();
 });
 
 /**
@@ -17,11 +18,17 @@ const createOrderElement = order => {
   const element = $(`
     <article>
     <div class="order-detail">
-    <label>#${order.id}</label>
+    <label>${order.id}</label>
     <div>Order Price: $${order.price / 100}</div>
     <div>Customer Name: ${order.first_name}</div>
     <div>Customer Phone Number: ${order.phone}</div>
-    <button id='${order.id}' class="ready-pickup">Ready for pickup</button>
+    <div>
+      <form class="update-actual">
+      <input type="number" name="actual">
+      <button id="submit-${order.id}" type="submit">Update</button>
+      </form>
+      <button id='ready-${order.id}' class="ready-pickup">Ready for pickup</button>
+    </div>
     </div>
     <div class="eta">ETA: ${currentETA}</div>
     </article>
@@ -31,11 +38,11 @@ const createOrderElement = order => {
 
 /**
  * Renders all of the order cards to '/orders' (Order Summary Page)
- * By default, filters to only show the 'open' orders which are not yet ready for pickup 
+ * By default, filters to only show the 'open' orders which are not yet ready for pickup
  */
 
 const renderOrders = (orders, status) => {
-  filteredOrders = orders.filter(order => order.status === status);
+  const filteredOrders = orders.filter(order => order.status === status);
   filteredOrders.forEach((order) => {
     const generatedOrder = createOrderElement(order);
     $("#orders-container").append(generatedOrder);
@@ -75,9 +82,9 @@ const readyForPickup = () => {
       $.post(`/api/orders/${orderId}`, data).then(response => {});
       $.post('/api/sms/3',data).then(response => {});
       loadOrders('open');
+    });
   });
-});
-}
+};
 
 /**
  * Calculates the current ETA for an order (ie. time remaining until pickup) in hours/minutes
@@ -101,9 +108,45 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
   return `${hours} hrs, ${minutes} min`
 }
 
+const updateActualPrepTime = () => {
+  $("#orders-container").on("submit", ".update-actual", function(event) {
+    event.preventDefault();
+    console.log("form submitted");
+    // function getSecondPart(str) {
+    //   return str.split('-')[1];
+    let stringId = $(this).nextAll("button").attr("id");
+    console.log("stringId", stringId);
+    let data = {
+      orderId: stringId.split('-')[1],
+      actual: $(this).find("input").val()
+    };
+    $.post(`/api/orders/actual/${data.orderId}`, data).then(response => {
+      $.get(`/api/orders/pickup/${data.orderId}`).then(smsData => {
+        $.post('/api/sms/2',smsData).then(response => {
+          console.log(response);
+        });
+        loadOrders('open');
+
+      });
+    });
+  });
+};
+//   });
+// };
+
+
+// method="post" action='/api/orders/actual/${order.id}
+
+// $.post("/tweets", $text).then(() => {
+//   $textBox.val('').css("height","40px");
+//   $counter.val(140);
+//   $(".display-tweets").empty();
+//   loadTweets();
+// });
+// return;
 
 // TO DO: add click handler for 'ETA Input Box' which does the following:
 // (1) writes the 'actual_prep_time' to the database
 // (2) sends SMS # 2 (ETA update) to the customer
     // orderData.orderID = response.rows[0].order_id;
-    //  
+    //

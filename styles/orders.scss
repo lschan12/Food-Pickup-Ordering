@@ -57,6 +57,10 @@
         cursor: pointer;
       }
     }
+    .eta {
+      font-weight: bold;
+      font-size: 2em;
+    }
   }
   article:hover {
     box-shadow: 0.2em 0.2em 0.5em gray;

@@ -2,7 +2,7 @@ const db = require("../connection");
 
 const getOrders = () => {
   return db.query(`
-  SELECT orders.id as id, 
+  SELECT orders.id as id,
          orders.total_price as price,
          orders.order_time as time,
          orders.est_prep_time as estimated,
@@ -19,7 +19,8 @@ const getOrders = () => {
 
 const getOrderForPickup = (orderID) => {
   return db.query(`
-  SELECT orders.id as id, 
+  SELECT orders.id as id,
+         orders.actual_prep_time as actual,
          users.first_name as first_name,
          users.phone_number as phone
   FROM orders
@@ -84,4 +85,14 @@ const changeOrderStatus = (orderId) => {
     });
 };
 
-module.exports = { getOrders, getOrderForPickup, getOrder, placeOrder, changeOrderStatus };
+const customEta = (orderId, actual) => {
+  return db.query(`
+  UPDATE orders SET actual_prep_time = $2 WHERE id = $1
+  RETURNING *;
+  `, [orderId, actual])
+    .then((data) => {
+      return data.rows[0];
+    });
+};
+
+module.exports = { getOrders, getOrderForPickup, getOrder, placeOrder, changeOrderStatus, customEta };
