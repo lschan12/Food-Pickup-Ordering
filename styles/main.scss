@@ -15,6 +15,8 @@ body {
   flex-direction: column;
   align-items: center;
   z-index: 2;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  // font-family: 'Inter Tight', sans-serif;
   // background: rgb(236,160,160);
   // background: linear-gradient(166deg, rgba(236,160,160,1) 0%, rgba(199,162,116,1) 51%, rgba(236,158,30,1) 100%);
   // border-radius: 5%;
@@ -45,6 +47,7 @@ body {
   white-space: nowrap;
   border-radius: 1.5em;
   box-shadow: 0.2em 0.2em 0.5em gray;
+  font-size: 1.5em;
   a {
     display: inline-block;
     text-align: center;
@@ -77,19 +80,22 @@ body {
     border-radius: 1em;
     label {
         margin-bottom: 2%;
-        font-size: 1.8em;
+        font-size: 2.1em;
+        font-weight: normal;
     }
     div {
         text-align: left;
         margin-top: 1%;
         margin-bottom: 2%;
-        font-size: 1em;
+        font-size: 1.3em;
+        font-weight: lighter;
     }
     .dishId {
       display: none;
     }
     img {
-      width: 30%;
+      max-width: 30%;
+      max-height: 300px;
     }
   }
   article:hover {
@@ -136,6 +142,7 @@ body {
   top: 2em;
   position: sticky;
   box-shadow: 0.2em 0.2em 0.5em gray;
+  font-size: 1.6em;
   div {
     margin-bottom: 3%;
   }
@@ -189,6 +196,26 @@ body {
   transform: scale(1.05);
 }
 
-#cart:hover {
-  transform: scale(1.2);
+.search-cart {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  background-color: rgb(206,229 ,244);
+  border-radius: 1.5em;
+  cursor: pointer;
+  box-shadow: 0.2em 0.2em 0.5em gray;
+  padding-top: 0.7em;
+  padding-bottom: 0.7em;
+  font-size: 0.8em;
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 5%;
+  }
+}
+
+.search-cart:hover {
+  transform: scale(1.05);
 }

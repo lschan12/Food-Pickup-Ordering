@@ -11,9 +11,26 @@ main {
   justify-content: center;
 }
 
+#thank-you {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin-top: 2%;
+  padding: 2%;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 2em;
+  border-radius: 1.5em;
+  width: 55%;
+  text-align: center;
+  box-shadow: 0.2em 0.2em 0.5em gray;
+}
+
 #receipt {
-  margin-top: 5%;
-  width: 80%;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.75em;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  width: 55%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +51,7 @@ main {
     }
     div {
       font-size: 1em;
+      margin-top: 2%;
     }
   }
 }
@@ -43,6 +61,7 @@ main {
   flex-direction: column;
   width: 100%;
   border-bottom: 1px dotted black;
+  font-size: 1.25em;
   article {
     width: 100%;
     padding: 2% 5% 2% 5%;
@@ -76,6 +95,7 @@ main {
   flex-direction: row;
   justify-content: space-between;
   padding: 2% 5% 2% 5%;
+  font-size: 1.3em;
   .time {
     display: flex;
     flex-direction: column;

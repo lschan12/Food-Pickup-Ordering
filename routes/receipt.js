@@ -5,7 +5,7 @@ const orderQueries = require('../db/queries/receipt');
 router.get('/:id', (req, res) => {
   orderQueries.getReceipt(req.params.id)
     .then(data => {
-      const templateVars = {user: req.session.user_id};
+      const templateVars = {user: req.session.user_id, order_id: req.params.id};
       templateVars["itemArr"] = data;
       data.forEach(item => item.price*=1);
       data.forEach(item => item.qty*=1);

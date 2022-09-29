@@ -53,7 +53,7 @@ const loadCart = () => {
   $(".cart-detail").empty();
   renderCartElement(uniqueCartItems);
   $(".cart-detail").append(
-    `<div class="footer">Total: $${totalPrice / 100}</div>`
+    `<div class="footer">Total: $${(totalPrice / 100)}</div>`
   );
   removeFromCart();
 };

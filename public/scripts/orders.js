@@ -126,8 +126,6 @@ const updateActualPrepTime = () => {
   $("#orders-container").on("submit", ".update-actual", function(event) {
     event.preventDefault();
     console.log("form submitted");
-    // function getSecondPart(str) {
-    //   return str.split('-')[1];
     let stringId = $(this).nextAll("button").attr("id");
     console.log("stringId", stringId);
     let data = {

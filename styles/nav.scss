@@ -15,7 +15,7 @@ nav {
     align-items: center;
     position: sticky;
     top: 0px;
-    font-size: 1.2em;
+    font-size: 1.5em;
     z-index: 6;
   }
   #restaurant-pic {
@@ -38,6 +38,7 @@ nav {
     top: 0;
     background-color: white;
     box-shadow: 0em 0.5em 0.5em -0.5em gray;
+    font-size: 2em;
     .restaurant-info {
       display: flex;
       flex-direction: column;
@@ -92,21 +93,3 @@ nav {
   }
 }
 
-
-.search-cart {
-  font-size: 1.2em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  i {
-    margin-right: 5%;
-    cursor: pointer;
-  }
-  #search {
-    height: 1.5em;
-    margin-right: 1em;
-    border: 1px solid gray;
-    padding-top: 0.75em;
-    padding-bottom: 0.75em;
-  }
-}

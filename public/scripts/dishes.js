@@ -64,7 +64,7 @@ const backToTop = () => {
 };
 
 const goToCart = () => {
-  $("#cart").click(function() {
+  $(".search-cart").click(function() {
     $("html, body").animate({
       scrollTop: $("#order-summary").position().top
     });

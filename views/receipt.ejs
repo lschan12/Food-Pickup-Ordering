@@ -36,12 +36,17 @@
       </div>
     </header>
   </nav>
+  <section id="thank-you">
+    <div>Thank you for placing an order with Lighthouse Bistro!</div>
+    <div>Please find your receipt below:</div>
+  </section>
   <main id="receipt">
     <section class="restaurant-info">
-      <label>Restaurant Name</label>
+      <label>Lighthouse Bistro</label>
       <div>
         <i class="fa-solid fa-location-dot"></i> Pick up at 1234 Test Ave
       </div>
+      <div>Order Number: <%= order_id %></div>
     </section>
     <section id="receipt-container">
       <% for (let order of itemArr ) { %>
@@ -57,7 +62,7 @@
     <section id="total">
       <div class="time">
         <div id="est-time">Estimated time until pickup: <%= totalTime%> minutes</div>
-        <div id="actual-time">Actual time: pending...</div>
+        <!-- <div id="actual-time">Actual time: pending...</div> -->
       </div>
         <div id="total-price">Total: $<%= totalPrice %></div>
     </section>
