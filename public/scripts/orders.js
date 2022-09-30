@@ -1,11 +1,41 @@
 $(() => {
   const socket = io();
-  socket.on('connect', () => {
+  socket.on("connect", () => {
     loadOrders("open");
+    viewCurrentOrders();
+    viewOrderHistory();
     readyForPickup(socket);
     updateActualPrepTime(socket);
   });
 });
+
+/**
+ * Helper function to normalize phone number formats for rendering
+ * @param {string} phoneNumberString a string of numbers usually in '##########' format
+ * @returns string with normalized phone number in format (###)###-####
+ */
+
+const formatPhoneNumber = (phoneNumberString) => {
+  let cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+  let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    let intlCode = match[1] ? "+1 " : "";
+    return [intlCode, "(", match[2], ") ", match[3], "-", match[4]].join("");
+  }
+  return null;
+};
+
+const viewCurrentOrders = () => {
+  $("#current").on("click", () => {
+    loadOrders("open");
+  });
+};
+
+const viewOrderHistory = () => {
+  $("#history").on("click", () => {
+    loadOrders("closed");
+  });
+};
 
 /**
  * Creates the individual order cards to display in '/orders' (Order Summary Page)
@@ -14,21 +44,14 @@ $(() => {
  * Then generates the HTML for the order card
  */
 
-const formatPhoneNumber = (phoneNumberString) => {
-  let cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-  let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
-  if (match) {
-    let intlCode = (match[1] ? '+1 ' : '');
-    return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
-  }
-  return null;
-};
-
 const createOrderElement = (order) => {
-  const orderETA =
-    order.actual === 0
-      ? getCurrentETA(order.time, order.estimated)
-      : convertToString(order.actual);
+  const displayETA = (status) => {
+    if (status === "closed") return "Order Picked Up";
+    return order.actual === 0
+      ? `ETA: ${getCurrentETA(order.time, order.estimated)}`
+      : `ETA: ${convertToString(order.actual)}`;
+  };
+
   const element = $(`
     <article>
     <div class="order-detail">
@@ -46,7 +69,7 @@ const createOrderElement = (order) => {
       }' class="ready-pickup">Ready for pickup</button>
     </div>
     </div>
-    <div class="eta">ETA: ${orderETA}</div>
+    <div class="eta">${displayETA(order.status)}</div>
     </article>
     `);
   return element;
@@ -68,7 +91,8 @@ const renderOrders = (orders, status) => {
 /**
  * Loads all of the orders from the database
  * @param {string} status A string containing the order status to filter the orders by
- * Empties the current HTML before calling renderOrders function to display the new set of orders
+ * Sorts the orders with most current ETA closest to top of page
+ * Empties the current HTML before calling renderOrders function to display the new set of sorted orders
  */
 
 const loadOrders = (status) => {
@@ -78,7 +102,7 @@ const loadOrders = (status) => {
         order.actual === 0 ? order.estimated : order.actual,
         order.id,
       ]);
-      let sorted = etas.sort((a, b) => a[0] - b[0]);
+      const sorted = etas.sort((a, b) => a[0] - b[0]);
       let sortedOrders = [];
 
       sorted.forEach((order) => {
@@ -95,10 +119,11 @@ const loadOrders = (status) => {
 
 /**
  * Click handler for "Ready for Pickup" button on each of the order cards
- * First queries db to get data specifically for the order
+ * Emits the order ID via web socket to update the customer reciept as "Ready for Pickup" (with no page refresh required)
+ * Queries database to get data specifically for the order
  * Writes to db to set the order status to 'closed'
  * Sends SMS # 3 (order ready for pickup) to customer
- * Re-renders orders
+ * Re-renders the order summary page
  */
 
 const readyForPickup = (socket) => {
@@ -116,10 +141,13 @@ const readyForPickup = (socket) => {
 
 /**
  * Calculates the current ETA for an order (ie. time remaining until pickup) in hours/minutes
+ * Converts from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
  * @param {timestamp} sqlTimestamp The timestamp of when the order was placed
  * @param {integer} orderETA An integer representing order's total ETA (in minutes)
  * @returns {string} A string containing the hours/minutes remaining until order is ready for pickup
  */
+
+// helper function
 const convertToString = (minutes) => {
   const hours = Math.floor(minutes / 60);
   const remainder = Math.round(minutes % 60, 0);
@@ -129,14 +157,21 @@ const convertToString = (minutes) => {
 };
 
 const getCurrentETA = (sqlTimestamp, orderETA) => {
-  // convert from PSQL date format ('2022-09-27T16:35:20.746Z') to JS date format
   const jsTimestamp = new Date(sqlTimestamp.replace(" ", "T"));
 
   const minutesSinceOrder = (Date.now() - jsTimestamp) / 1000 / 60;
-  const currentETA = orderETA - minutesSinceOrder < 0 ? 0 : orderETA - minutesSinceOrder;
+  const currentETA =
+    orderETA - minutesSinceOrder < 0 ? 0 : orderETA - minutesSinceOrder;
 
   return convertToString(currentETA);
 };
+
+/**
+ * Updates the customer's receipt page with an updated ETA when restaurant manually changes the order ETA
+ * Emits the updated ETA via web socket for display on the customer reciept (with no page refresh required)
+ * Sends SMS # 2 (updated ETA notification) to customer
+ * Re-renders the order summary page
+ */
 
 const updateActualPrepTime = (socket) => {
   $("#orders-container").on("submit", ".update-actual", function (event) {
@@ -149,11 +184,9 @@ const updateActualPrepTime = (socket) => {
     socket.emit("new-est", data.actual);
     $.post(`/api/orders/actual/${data.orderId}`, data).then((response) => {
       $.get(`/api/orders/pickup/${data.orderId}`).then((smsData) => {
-        $.post("/api/sms/2", smsData).then((response) => {
-        });
+        $.post("/api/sms/2", smsData).then((response) => {});
         loadOrders("open");
       });
     });
   });
 };
-
