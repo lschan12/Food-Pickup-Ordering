@@ -6,7 +6,6 @@ router.post("/", (req, res) => {
   registerUser(req.body)
     .then((response) => {
       req.session.user_id = response.id;
-      console.log(req.session.user_id);
       res.redirect('../');
     })
     .catch((err) => {

@@ -11,7 +11,7 @@ router.get('/:id', (req, res) => {
       data.forEach(item => item.qty*=1);
       let totalPrice = data.reduce((sum, {price, qty}) => sum + price * qty, 0);
       let totalTime = data[0].time;
-      templateVars["totalPrice"] = totalPrice / 100;
+      templateVars["totalPrice"] = (totalPrice / 100).toFixed(2);
       templateVars["totalTime"] = totalTime;
       res.render('receipt', templateVars);
     });

@@ -55,11 +55,6 @@ const registerRoutes = require('./routes/register');
 const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
 
-/* const usersRoutes = require('./routes/users');*/
-
-/**
- * Mount Routes
-*/
 
 // API Routes
 app.use('/api/users', userApiRoutes);
@@ -78,15 +73,9 @@ app.use('/register', registerRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 
-/* app.use('/users', usersRoutes); */
-
-
 /**
  * Home Page
 */
-
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
   res.redirect('login');
@@ -94,29 +83,18 @@ app.get('/', (req, res) => {
 
 app.use(express.static('/' + '/public'));
 
+/**
+ * Websocket Connection
+*/
+
 io.on('connection', function(socket) {
-  console.log("a user connected");
-  socket.on("client speaks:", (payload, callback) => {
-    console.log("payload", payload);
-    // To do: add login here to grab data from orders.js and socket.emit to client
-    const response = {message: "all good"};
-    io.emit("hello from server", response);
-    return callback(response);
-  });
   socket.on("orderid", (payload) => {
-    io.emit("server payload", payload);
+    io.emit("ready", payload);
   });
   socket.on("new-est", (payload) => {
-    io.emit("server payload2", payload);
+    io.emit("update", payload);
   });
-  // socket.emit('message', {message: 'welcome to the chat'});
-  // socket.on('send', function(data) {
-  //   io.sockets.emit('message', data);
 });
 
 server.listen(PORT);
 
-
-// app.listen(PORT, () => {
-//   console.log(`Example app listening on port ${PORT}`);
-// });

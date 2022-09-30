@@ -2,7 +2,17 @@ $(() => {
   loadDishes("All");
   backToTop();
   goToCart();
+  selectCategory();
 });
+
+const selectCategory = () => {
+  const $categoryTitle = $(".categories a");
+  $categoryTitle.on("click", function(event) {
+    event.preventDefault();
+    const $category = $(this).text();
+    loadDishes($category);
+  });
+};
 
 const createDishElement = dish => {
   const element = $(`

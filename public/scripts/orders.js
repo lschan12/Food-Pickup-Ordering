@@ -1,15 +1,9 @@
 $(() => {
   const socket = io();
   socket.on('connect', () => {
-    const engine = socket.io.engine;
-    console.log("socket id", socket.id);
-    socket.emit("client speaks:", {user: 3}, (res) => {
-      console.log("response from client", res);
-    });
     loadOrders("open");
     readyForPickup(socket);
     updateActualPrepTime(socket);
-    socketFunction();
   });
 });
 
@@ -20,24 +14,32 @@ $(() => {
  * Then generates the HTML for the order card
  */
 
+const formatPhoneNumber = (phoneNumberString) => {
+  let cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+  let match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    let intlCode = (match[1] ? '+1 ' : '');
+    return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+  }
+  return null;
+};
+
 const createOrderElement = (order) => {
   const orderETA =
     order.actual === 0
       ? getCurrentETA(order.time, order.estimated)
       : convertToString(order.actual);
-  // const currentETA = getCurrentETA(order.time, orderETA);
-
   const element = $(`
     <article>
     <div class="order-detail">
     <label>${order.id}</label>
-    <div>Order Price: $${order.price / 100}</div>
+    <div>Order Price: $${(order.price / 100).toFixed(2)}</div>
     <div>Customer Name: ${order.first_name}</div>
-    <div>Customer Phone Number: ${order.phone}</div>
+    <div>Customer Phone Number: ${formatPhoneNumber(order.phone)}</div>
     <div>
       <form class="update-actual">
       <input type="number" name="actual">
-      <button id="submit-${order.id}" type="submit">Update</button>
+      <button id="submit-${order.id}" type="submit">Update ETA</button>
       </form>
       <button id='ready-${
         order.id
@@ -103,7 +105,6 @@ const readyForPickup = (socket) => {
   $("#orders-container").on("click", ".ready-pickup", function () {
     let stringId = $(this).attr("id");
     let orderId = stringId.split("-")[1];
-    console.log("orderid", orderId);
     socket.emit("orderid", orderId);
     $.get(`/api/orders/pickup/${orderId}`).then((data) => {
       $.post(`/api/orders/${orderId}`, data).then((response) => {});
@@ -140,9 +141,7 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
 const updateActualPrepTime = (socket) => {
   $("#orders-container").on("submit", ".update-actual", function (event) {
     event.preventDefault();
-    console.log("form submitted");
     let stringId = $(this).nextAll("button").attr("id");
-    console.log("stringId", stringId);
     let data = {
       orderId: stringId.split("-")[1],
       actual: $(this).find("input").val(),
@@ -151,43 +150,10 @@ const updateActualPrepTime = (socket) => {
     $.post(`/api/orders/actual/${data.orderId}`, data).then((response) => {
       $.get(`/api/orders/pickup/${data.orderId}`).then((smsData) => {
         $.post("/api/sms/2", smsData).then((response) => {
-          console.log(response);
         });
         loadOrders("open");
       });
     });
   });
 };
-//   });
-// };
 
-// method="post" action='/api/orders/actual/${order.id}
-
-// $.post("/tweets", $text).then(() => {
-//   $textBox.val('').css("height","40px");
-//   $counter.val(140);
-//   $(".display-tweets").empty();
-//   loadTweets();
-// });
-// return;
-
-// TO DO: add click handler for 'ETA Input Box' which does the following:
-// (1) writes the 'actual_prep_time' to the database
-// (2) sends SMS # 2 (ETA update) to the customer
-// orderData.orderID = response.rows[0].order_id;
-//
-
-
-const socketFunction = () => {
-  $("#orders-container").on("click", ".ready-pickup", function() {
-    let stringId = $(this).attr("id");
-    let orderId = stringId.split("-")[1];
-    console.log("orderid", orderId);
-
-  });
-};
-
-// const socket = io();
-//     socket.on('connect', () => {
-//       console.log("socketid", socket.id);
-//     })

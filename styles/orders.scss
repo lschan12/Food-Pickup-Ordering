@@ -41,13 +41,21 @@
       justify-content: space-evenly;
       label {
           margin-bottom: 2%;
-          font-size: 1.8em;
+          font-size: 2em;
       }
       div {
           text-align: left;
           margin-top: 1%;
           margin-bottom: 2%;
-          font-size: 1em;
+          font-size: 1.5em;
+          input {
+            border: none;
+            border-bottom: 1px solid gray;
+          }
+          button {
+            font-size: 0.9em;
+            margin-top: 4%;
+          }
       }
       .restaurant-input {
         display: flex;
@@ -61,7 +69,7 @@
           }
         };
         button {
-          width: 50%;
+          width: 30%;
           padding: 0.5em 1em 0.5em 1em;
           border-radius: 2em;
           border: none;
@@ -79,7 +87,7 @@
       margin-bottom: 5%;
     }
     .ready-pickup {
-        width: 100%;
+        width: 50%;
         padding: 0.5em 1em 0.5em 1em;
         border-radius: 2em;
         border: none;

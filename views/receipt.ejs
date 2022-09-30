@@ -31,7 +31,7 @@
   <nav>
     <header id="website-info">
       <div class="left-nav">
-        <span id="logo">Lighthouse Bistro</span>
+        <img id="logo" src="https://i.imgur.com/k7SuI3O.png"></img>
       </div>
       <div class="user-buttons">
         <form method="post" action="/logout">
@@ -48,7 +48,7 @@
     <section class="restaurant-info">
       <label>Lighthouse Bistro</label>
       <div>
-        <i class="fa-solid fa-location-dot"></i> Pick up at 1234 Test Ave
+        <i class="fa-solid fa-location-dot"></i> Pick up at 7425 Rockwater Dr.
       </div>
       <div>Order Number: <%= order_id %></div>
     </section>
@@ -74,16 +74,11 @@
   <script>
     const socket = io();
     socket.on('connect', () => {
-      console.log("socketid", socket.id);
     })
-    socket.on('hello from server', (response) => {
-      console.log("response from server", response);
-    })
-    socket.on("server payload", (payload) => {
-      console.log("ready for pick up!")
+    socket.on("ready", (payload) => {
       $("#est-time").html("Ready for Pick Up!")
     })
-    socket.on("server payload2", (payload) => {
+    socket.on("update", (payload) => {
       $("#est-time").html(`Updated ETA: ${payload} minutes`)
     })
   </script>

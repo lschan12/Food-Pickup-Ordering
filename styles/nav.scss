@@ -5,7 +5,7 @@ nav {
   flex-direction: column;
   width: 100%;
   #website-info {
-    background-color: white;
+    background: linear-gradient(90deg, rgba(6,35,69,1) 0%, rgba(6,35,69,1) 75%, rgba(2,81,137,1) 100%);
     width: 100%;
     padding: 1.5% 5% 1.5% 5%;
     text-align: center;
@@ -60,10 +60,8 @@ nav {
   flex-direction: row;
   align-items: center;
   #logo {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 2.5em;
-    margin-right: 0.5em;
-    cursor: pointer;
+    width: 128px;
+    height: 120px;
   }
   #contact-us {
     cursor: pointer;
@@ -75,14 +73,17 @@ nav {
   flex-direction: row;
   align-items: center;
   #login {
+    color: white;
     margin-right: 1em;
     cursor: pointer;
   }
   #register {
+    color: white;
     margin-right: 1em;
     cursor: pointer;
   }
   p {
+    color: white;
     margin-right: 1%;
   }
   .logout {

@@ -1,34 +1,32 @@
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilio = process.env.TWILIO_PHONE_NUMBER;
-const customer = process.env.CUSTOMER_PHONE_NUMBER;
 const restaurant = process.env.RESTAURANT_PHONE_NUMBER;
 
 const client = require('twilio')(accountSid, authToken);
 
-// TO DO: we need a restaurant name (remove the fake one below)
 const restaurantName = 'Lighthouse Bistro';
-const restaurantAddress = '1234 Test Ave, City, BC T7E 0N3'
+const restaurantAddress = '7425 Rockwater Dr, Atwood Lake, BC T7E 0N3';
 
 /**
    * Restaurant SMS # 1: Order Confirmation Notificaiton
   */
 
- const restaurantSMS_1 = ({orderID, userName, userPhone, totalPrice }) => {
+const restaurantSMS_1 = ({orderID, userName, userPhone, totalPrice }) => {
 
   let time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', hour12: true, minute: 'numeric' });
 
   const textString = `New order recieved at ${time} from ${userName} @ ${userPhone}.  Total Price: $${totalPrice / 100}.  Order ID: ${orderID}`;
 
   return client.messages
-  .create({
-    from: twilio,
-    to: restaurant,
-    body: textString,
-  })
-  .then(message => {
-    return message.sid;
-  });
+    .create({
+      from: twilio,
+      to: restaurant,
+      body: textString,
+    })
+    .then(message => {
+      return message.sid;
+    });
 };
 
 
@@ -38,10 +36,9 @@ const restaurantAddress = '1234 Test Ave, City, BC T7E 0N3'
 
 const customerSMS_1 = ({userName, userPhone, estimatedTime}) => {
 
-    const textString = `Hello ${userName}, thank you for your order at ${restaurantName}!  Your estimated wait time is approx ${estimatedTime} minutes.\
-    We will notify you once your order is ready for pickup!`
-
-    return client.messages
+  const textString = `Hello ${userName}, thank you for your order at ${restaurantName}!  Your estimated wait time is approx ${estimatedTime} minutes.\
+  We will notify you once your order is ready for pickup!`
+  return client.messages
     .create({
       from: twilio,
       to: userPhone,
@@ -50,7 +47,7 @@ const customerSMS_1 = ({userName, userPhone, estimatedTime}) => {
     .then(message => {
       return message.sid;
     });
-  };
+};
 
 
 /**
@@ -64,14 +61,14 @@ const customerSMS_2 = ({first_name, phone, actual}) => {
   We will notify you once your order is ready for pickup!`
 
   return client.messages
-  .create({
-    from: twilio,
-    to: phone,
-    body: textString,
-  })
-  .then(message => {
-    return message.sid;
-  });
+    .create({
+      from: twilio,
+      to: phone,
+      body: textString,
+    })
+    .then(message => {
+      return message.sid;
+    });
 };
 
 /**
@@ -84,14 +81,14 @@ const customerSMS_3 = ({first_name, phone}) => {
   const textString = `Hello ${first_name}, your order at ${restaurantName} is now ready for pickup!  Pickup location is at ${restaurantAddress}`
 
   return client.messages
-  .create({
-    from: twilio,
-    to: phone,
-    body: textString,
-  })
-  .then(message => {
-    return message.sid;
-  });
+    .create({
+      from: twilio,
+      to: phone,
+      body: textString,
+    })
+    .then(message => {
+      return message.sid;
+    });
 };
 
 module.exports = { customerSMS_1, customerSMS_2, customerSMS_3, restaurantSMS_1 };

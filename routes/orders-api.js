@@ -41,7 +41,6 @@ router.get('/pickup/:id', (req, res) => {
 router.post("/", (req, res) => {
   placeOrder(req.body)
     .then((response) => {
-      console.log("response", response);
       res.json(response);
     })
     .catch((err) => {
@@ -62,10 +61,8 @@ router.post('/:id', (req, res) => {
 });
 
 router.post('/actual/:id', (req, res) => {
-  console.log("req from post", req.params.id, req.body);
   customEta(req.params.id, req.body.actual)
     .then(order=> {
-      console.log(order);
       res.json(order);
     })
     .catch(err => {

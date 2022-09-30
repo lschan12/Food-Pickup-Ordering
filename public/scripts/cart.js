@@ -7,7 +7,6 @@ $(() => {
 const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
-// let totalTime = 0;
 let userObj = {};
 const getUserObj = () => {
   $.get("/api/users", function (data) {
@@ -53,7 +52,7 @@ const loadCart = () => {
   $(".cart-detail").empty();
   renderCartElement(uniqueCartItems);
   $(".cart-detail").append(
-    `<div class="footer">Total: $${(totalPrice / 100)}</div>`
+    `<div class="footer">Total: $${(totalPrice / 100).toFixed(2)}</div>`
   );
   removeFromCart();
 };
@@ -101,15 +100,14 @@ const removeFromCart = () => {
 const calculateEstimatedETA = (cartItems, sum = false) => {
   if (sum) {
     return cartItems.reduce((acc, obj) => acc + obj.prep_time, 0);
-  };
+  }
   const factor = 1 + ((cartItems.length - 1) * 0.05);
   const longestETA = cartItems.reduce((acc, obj) => acc < obj.prep_time ? obj.prep_time : acc, 0);
-  const estimatedETA = Math.ceil((( longestETA * factor) / 5)) * 5;
+  const estimatedETA = Math.ceil(((longestETA * factor) / 5)) * 5;
   return estimatedETA;
 };
 
 const placeOrder = () => {
-  console.log("userObj: ",userObj);
   $("#place-order").on("click", () => {
     const orderData = {
       userId: userObj.id,
@@ -120,12 +118,9 @@ const placeOrder = () => {
       dishIDs: allCartItems.map((dish) => dish.id),
       status: "open",
     };
-
     $.post("/api/orders", orderData).then((response) => {
-
       orderData["orderID"] = response.order_id;
       window.location.replace(`/receipt/${response.order_id}`);
-
       $.post("/api/sms/1", orderData).then((response) => {});
     });
   });
