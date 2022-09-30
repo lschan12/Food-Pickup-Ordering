@@ -25,6 +25,11 @@ const formatPhoneNumber = (phoneNumberString) => {
   return null;
 };
 
+/**
+ * Click handlers for the 2 buttons at the top of the Order Summary Page
+ * Loads the orders based on the order status
+ */
+
 const viewCurrentOrders = () => {
   $("#current").on("click", () => {
     loadOrders("open");
@@ -39,9 +44,9 @@ const viewOrderHistory = () => {
 
 /**
  * Creates the individual order cards to display in '/orders' (Order Summary Page)
- * First checks if the restaurant specified a custom ETA, and sets ETA either as custom or the default estimate.
- * Then gets the current ETA based on the amount of time that has elapsed since the order was placed
- * Then generates the HTML for the order card
+ * Checks if the restaurant specified a custom ETA, and sets ETA as either custom or default.
+ * Gets the 'current ETA' based on the amount of time that has elapsed since the order was placed
+ * Generates the HTML for the order card
  */
 
 const createOrderElement = (order) => {
@@ -118,10 +123,10 @@ const loadOrders = (status) => {
 };
 
 /**
- * Click handler for "Ready for Pickup" button on each of the order cards
- * Emits the order ID via web socket to update the customer reciept as "Ready for Pickup" (with no page refresh required)
+ * Click handler for 'Ready for Pickup' button on each of the order cards
+ * Emits the orderID via web socket to update the customer reciept with "Ready for Pickup" message (with no page refresh required)
  * Queries database to get data specifically for the order
- * Writes to db to set the order status to 'closed'
+ * Updates the order status as 'closed' in the database
  * Sends SMS # 3 (order ready for pickup) to customer
  * Re-renders the order summary page
  */
@@ -169,7 +174,7 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
 /**
  * Updates the customer's receipt page with an updated ETA when restaurant manually changes the order ETA
  * Emits the updated ETA via web socket for display on the customer reciept (with no page refresh required)
- * Sends SMS # 2 (updated ETA notification) to customer
+ * Sends SMS # 2 (ETA has been updated notification) to customer
  * Re-renders the order summary page
  */
 

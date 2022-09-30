@@ -8,12 +8,19 @@ const allCartItems = [];
 let uniqueCartItems = [];
 let totalPrice = 0;
 let userObj = {};
+
+/**
+ * Gets current user's data from database
+ */
 const getUserObj = () => {
   $.get("/api/users", function (data) {
     userObj = data;
   });
 };
 
+/**
+ * Helper function to get the quantity of a particular dish for the cart display
+ */
 const countFunction = (array) => {
   const counter = {};
   array.forEach((obj) => {
@@ -23,6 +30,9 @@ const countFunction = (array) => {
   return counter;
 };
 
+/**
+ * Generates the HTML for each individual dish in the cart
+ */
 const createCartElement = (obj, count) => {
   const element = $(`
   <article>
@@ -37,6 +47,9 @@ const createCartElement = (obj, count) => {
   return element;
 };
 
+/**
+ * Renders all of cart items
+ */
 const renderCartElement = (array) => {
   array.forEach((element) => {
     let count = countFunction(allCartItems)[element.id];
@@ -45,6 +58,11 @@ const renderCartElement = (array) => {
   });
 };
 
+/**
+ * Maps all of the unique dishes in the order 
+ * Empties the cart before dynamically re-rendering the cart
+ * Initializes the removeFromCart click handler
+ */
 const loadCart = () => {
   uniqueCartItems = [
     ...new Map(allCartItems.map((item) => [item.id, item])).values(),
@@ -56,6 +74,14 @@ const loadCart = () => {
   );
   removeFromCart();
 };
+
+/**
+ * Click handler for the 'Add to Cart' button on each of the dish cards 
+ * Queries database to get data specifically for the dish and adds to cart items array
+ * Updates the cart total by adding the new dish's price
+ * Updates and renders the order's estimated ETA
+ * Re-renders the cart
+ */
 
 const addToCart = () => {
   $("#dishes-container").on("click", ".add-to-cart", function () {
@@ -69,6 +95,13 @@ const addToCart = () => {
     });
   });
 };
+
+/**
+ * Click handler for the 'Remove from Cart' button on each of the cart line items
+ * Removes the item from the cart items arrays (all & unique)
+ * Updates and renders the order's estimated ETA
+ * Re-renders the cart
+ */
 
 const removeFromCart = () => {
   $(".remove-from-cart").on("click", function () {
@@ -106,6 +139,14 @@ const calculateEstimatedETA = (cartItems, sum = false) => {
   const estimatedETA = Math.ceil(((longestETA * factor) / 5)) * 5;
   return estimatedETA;
 };
+
+/**
+ * Click handler for the 'Place Order' button at the bottom of the cart
+ * Creates a data object to pass to the POST to /api/orders
+ * Inserts data into orders table in db via the POST to /api/orders
+ * Renders the order confirmation (receipt) page for customer
+ * Sends SMS # 1 (order confirmation) to both restaurant and customer
+ */
 
 const placeOrder = () => {
   $("#place-order").on("click", () => {

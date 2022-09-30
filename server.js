@@ -1,14 +1,14 @@
 // load .env data into process.env
 require('dotenv').config();
 
-// Web server config
 const sassMiddleware = require('./lib/sass-middleware');
 const cookieSession = require("cookie-session");
 const express = require('express');
 const morgan = require('morgan');
 
-const PORT = process.env.PORT || 8080;
+// Web server & socket config
 const app = express();
+const PORT = process.env.PORT || 8080;
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
@@ -42,10 +42,10 @@ app.use(express.static('public'));
 const userApiRoutes = require('./routes/users-api');
 const dishesApiRoutes = require('./routes/dishes-api');
 const ordersApiRoutes = require('./routes/orders-api');
-const smsApiRoutes = require('./routes/sms-api');
 const receiptApiRoutes = require('./routes/receipt-api');
-const loginApiRoutes = require('./routes/login-api');
 const registerApiRoutes = require('./routes/register-api');
+const loginApiRoutes = require('./routes/login-api');
+const smsApiRoutes = require('./routes/sms-api');
 
 // Render Routes
 const dishesRoutes = require('./routes/dishes');
@@ -97,4 +97,3 @@ io.on('connection', function(socket) {
 });
 
 server.listen(PORT);
-
