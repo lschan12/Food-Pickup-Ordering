@@ -29,8 +29,8 @@ INSERT INTO dishes (name, category_id, photo_url, price, prep_time, description,
 
 -- Desserts
 ('npm Cheesecake', 5, 'https://i.imgur.com/8QnDAGc.png', 799, 10, 'Traditional ''Never Push to Master'' style cheesecake with a git cracker crust.', 4.0),
-('Chocolate Cheesecake Explosion', 5, 'https://i.imgur.com/xgIM7oO.png', 899, 10, 'Creamy chocolate mousse with chunks of cheesecake, caramel, toffee, pecans, and React on a chocolate crust.', 5.0),
-('Red Velvet Delight', 5, 'https://i.imgur.com/QNXjVGo.png', 999, 10, 'Silky smooth double decker red velvet cake, almost as lightweight and elegant as Andy''s code.', 4.0),
+('Chocolate Cheesecake Explosion', 5, 'https://i.imgur.com/xgIM7oO.png', 899, 10, 'Creamy chocolate mousse with chunks of cheesecake, caramel, React, toffee, and pecans on a chocolate crust.', 5.0),
+('Red Velvet Delight', 5, 'https://i.imgur.com/QNXjVGo.png', 999, 10, 'Silky smooth double decker red velvet cake, almost as lightweight and elegant as Andy or Nally''s code.', 4.0),
 
 -- Drinks
 ('Ginger Ale', 6, 'https://i.imgur.com/p3vNYQP.png', 299, 10, 'Served in 2L or 600mL, a delicious carbonated drink made with real ginger.', 4.0),
