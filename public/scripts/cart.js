@@ -32,7 +32,7 @@ const createCartElement = (obj, count) => {
       <label>${obj.name}</label>
       <button id='${obj.id}' class="remove-from-cart">Remove</button>
     </div>
-    <div>$${(obj.price / 100) * count}</div>
+    <div>$${((obj.price / 100) * count).toFixed(2)}</div>
   </article>
   `);
   return element;

@@ -83,10 +83,6 @@ const loadOrders = (status) => {
         sortedOrders.push(orders.filter((obj) => obj.id === order[1])[0]);
       });
 
-      console.log("etas array:", etas);
-      console.log("sorted array:", sorted);
-      console.log("sorted orders (end product):", sortedOrders);
-
       $("#orders-container").empty();
       renderOrders(sortedOrders, status);
     })
