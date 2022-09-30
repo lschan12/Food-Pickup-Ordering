@@ -20,6 +20,8 @@
 
   <!-- External JS -->
   <script src="/vendor/jquery-3.0.0.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
   <!-- App JS -->
   <!-- <script defer src="/scripts/receipt.js"></script> -->
 </head>
@@ -69,6 +71,22 @@
         <div id="total-price">Total: $<%= totalPrice %></div>
     </section>
   </main>
+  <script>
+    const socket = io();
+    socket.on('connect', () => {
+      console.log("socketid", socket.id);
+    })
+    socket.on('hello from server', (response) => {
+      console.log("response from server", response);
+    })
+    socket.on("server payload", (payload) => {
+      console.log("ready for pick up!")
+      $("#est-time").html("Ready for Pick Up!")
+    })
+    socket.on("server payload2", (payload) => {
+      $("#est-time").html(`Updated ETA: ${payload} minutes`)
+    })
+  </script>
 </body>
 </html>
 

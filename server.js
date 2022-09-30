@@ -9,6 +9,8 @@ const morgan = require('morgan');
 
 const PORT = process.env.PORT || 8080;
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 app.set('view engine', 'ejs');
 
@@ -90,6 +92,31 @@ app.get('/', (req, res) => {
   res.redirect('login');
 });
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+app.use(express.static('/' + '/public'));
+
+io.on('connection', function(socket) {
+  console.log("a user connected");
+  socket.on("client speaks:", (payload, callback) => {
+    console.log("payload", payload);
+    // To do: add login here to grab data from orders.js and socket.emit to client
+    const response = {message: "all good"};
+    io.emit("hello from server", response);
+    return callback(response);
+  });
+  socket.on("orderid", (payload) => {
+    io.emit("server payload", payload);
+  });
+  socket.on("new-est", (payload) => {
+    io.emit("server payload2", payload);
+  });
+  // socket.emit('message', {message: 'welcome to the chat'});
+  // socket.on('send', function(data) {
+  //   io.sockets.emit('message', data);
 });
+
+server.listen(PORT);
+
+
+// app.listen(PORT, () => {
+//   console.log(`Example app listening on port ${PORT}`);
+// });

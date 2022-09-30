@@ -1,7 +1,16 @@
 $(() => {
-  loadOrders("open");
-  readyForPickup();
-  updateActualPrepTime();
+  const socket = io();
+  socket.on('connect', () => {
+    const engine = socket.io.engine;
+    console.log("socket id", socket.id);
+    socket.emit("client speaks:", {user: 3}, (res) => {
+      console.log("response from client", res);
+    });
+    loadOrders("open");
+    readyForPickup(socket);
+    updateActualPrepTime(socket);
+    socketFunction();
+  });
 });
 
 /**
@@ -94,11 +103,12 @@ const loadOrders = (status) => {
  * Re-renders orders
  */
 
-const readyForPickup = () => {
+const readyForPickup = (socket) => {
   $("#orders-container").on("click", ".ready-pickup", function () {
     let stringId = $(this).attr("id");
     let orderId = stringId.split("-")[1];
     console.log("orderid", orderId);
+    socket.emit("orderid", orderId);
     $.get(`/api/orders/pickup/${orderId}`).then((data) => {
       $.post(`/api/orders/${orderId}`, data).then((response) => {});
       $.post("/api/sms/3", data).then((response) => {});
@@ -131,7 +141,7 @@ const getCurrentETA = (sqlTimestamp, orderETA) => {
   return convertToString(currentETA);
 };
 
-const updateActualPrepTime = () => {
+const updateActualPrepTime = (socket) => {
   $("#orders-container").on("submit", ".update-actual", function (event) {
     event.preventDefault();
     console.log("form submitted");
@@ -141,6 +151,7 @@ const updateActualPrepTime = () => {
       orderId: stringId.split("-")[1],
       actual: $(this).find("input").val(),
     };
+    socket.emit("new-est", data.actual);
     $.post(`/api/orders/actual/${data.orderId}`, data).then((response) => {
       $.get(`/api/orders/pickup/${data.orderId}`).then((smsData) => {
         $.post("/api/sms/2", smsData).then((response) => {
@@ -169,3 +180,18 @@ const updateActualPrepTime = () => {
 // (2) sends SMS # 2 (ETA update) to the customer
 // orderData.orderID = response.rows[0].order_id;
 //
+
+
+const socketFunction = () => {
+  $("#orders-container").on("click", ".ready-pickup", function() {
+    let stringId = $(this).attr("id");
+    let orderId = stringId.split("-")[1];
+    console.log("orderid", orderId);
+
+  });
+};
+
+// const socket = io();
+//     socket.on('connect', () => {
+//       console.log("socketid", socket.id);
+//     })
